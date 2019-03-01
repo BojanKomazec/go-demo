@@ -5,17 +5,16 @@ import (
 	"fmt"
 )
 
-// type person struct {
-// 	name string
-// 	age int
-// 	siblings []person
-// }
+type person struct {
+	name string
+	age int
+}
 
-// type address struct {
-// 	street string
-// 	city string
-// 	number int
-// }
+type address struct {
+	street string
+	city string
+	number int
+}
 
 // type register {
 // 	value11 bool
