@@ -8,6 +8,7 @@ import (
 	"github.com/BojanKomazec/go-demo/jsondemo"
 	"github.com/BojanKomazec/go-demo/mapdemo"
 	"github.com/BojanKomazec/go-demo/types"
+	"github.com/BojanKomazec/go-demo/randdemo"
 )
 
 func main() {
@@ -19,4 +20,5 @@ func main() {
 	types.EnumDemo()
 	mapdemo.ShowDemo()
 	jsondemo.ShowDemo()
+	randdemo.ShowDemo()
 }
