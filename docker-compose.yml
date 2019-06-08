@@ -1,0 +1,28 @@
+version: '3'
+services:
+  # postgres:
+  #   image: postgres
+  #   container_name: go_demo_postgres
+  #   volumes:
+  #     - ./database_data:/var/lib/postgresql/data
+  #   ports:
+  #     - 5432:5432
+  #   environment:
+  #     POSTGRES_DB: $PGDATABASE
+  #     POSTGRES_USER: $PGUSER
+  #     POSTGRES_PASSWORD: $PGPASSWORD
+  #   stdin_open: true
+  #   tty: true
+
+  go-demo:
+    # restart: always
+    # depends_on:
+    #   - postgres
+    # environment:
+    #   DB_HOST: postgres
+    #   DB_PORT: 5432
+    #   DB_NAME: go_demo
+    #   DB_USER: postgres
+    #   DB_PASSWORD: postgres
+    build:
+      context: .

@@ -1,4 +1,4 @@
-// package httpdemo
+package httpdemo
 
 // import (
 // 	"net/http"
