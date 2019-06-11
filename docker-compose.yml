@@ -15,14 +15,17 @@ services:
   #   tty: true
 
   go-demo:
-    # restart: always
+    restart: always
     # depends_on:
     #   - postgres
-    # environment:
-    #   DB_HOST: postgres
-    #   DB_PORT: 5432
-    #   DB_NAME: go_demo
-    #   DB_USER: postgres
-    #   DB_PASSWORD: postgres
+    environment:
+      DB_HOST: $DB_HOST
+      DB_PORT: $DB_PORT
+      DB_NAME: $DB_NAME
+      DB_USER: $DB_USER
+      DB_PASSWORD: $DB_PASSWORD
+      # CGO_ENABLED: 0
+      # GOOS: linux
+      # GOARCH: amd64
     build:
       context: .
