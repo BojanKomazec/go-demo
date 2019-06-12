@@ -16,9 +16,11 @@ We can now run the container and pass DB network, IP and other configuration. `d
 $ docker run -e DB_HOST=172.16.239.2 -e DB_PORT=5432 -e DB_NAME=demo -e DB_USER=postgres -e DB_PASSWORD:postgres --rm -it --network=postgres-demo-net --name go-demo go-demo
 ```
 
-## DB test data
+## DB and test data
 
-To create a test table and populate it with some dummy data, we can use an example from e.g. http://www.postgresqltutorial.com/postgresql-array/:
+To spin off a Postgres instance, clone https://github.com/BojanKomazec/postgres-demo and launch it with docker-compose.
+
+To create a test table and populate it with some dummy data, you can use an example from e.g. http://www.postgresqltutorial.com/postgresql-array/:
 ```
 CREATE TABLE contacts (
    id serial PRIMARY KEY,
