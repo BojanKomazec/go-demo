@@ -3,6 +3,8 @@ package pgclientdemo
 import (
 	"fmt"
 	"reflect"
+	"strconv"
+	"strings"
 
 	"github.com/BojanKomazec/go-demo/internal/pkg/config"
 	"github.com/BojanKomazec/go-demo/internal/pkg/dbclient"
@@ -55,7 +57,45 @@ func ShowDemo(conf *config.Config) {
 			case string:
 				fmt.Printf("%s\n", allRows[i][j])
 			case []uint8:
-				fmt.Printf("%v\n", allRows[i][j])
+				// if DB column type is string array then convert
+				// this value into a string and parse it into a
+				// string array
+				if columnInfo[j].RegType == "text[]" {
+					if byteArr, ok := allRows[i][j].([]byte); ok {
+						columnStringifiedValue := string(byteArr)
+						columnStringifiedValue = strings.TrimPrefix(columnStringifiedValue, "{")
+						columnStringifiedValue = strings.TrimSuffix(columnStringifiedValue, "}")
+						stringElements := strings.Split(columnStringifiedValue, ",")
+
+						fmt.Printf("%s\n", string(byteArr))
+						fmt.Println("Array elements (strings):", stringElements)
+					} else {
+						fmt.Println("Conversion failed")
+					}
+				} else if columnInfo[j].RegType == "integer[]" {
+					if byteArr, ok := allRows[i][j].([]byte); ok {
+						columnStringifiedValue := string(byteArr)
+						columnStringifiedValue = strings.TrimPrefix(columnStringifiedValue, "{")
+						columnStringifiedValue = strings.TrimSuffix(columnStringifiedValue, "}")
+						stringifiedNumbers := strings.Split(columnStringifiedValue, ",")
+						numbers := make([]int, 0)
+						for _, v := range stringifiedNumbers {
+							number, err := strconv.Atoi(v)
+							if err == nil {
+								numbers = append(numbers, number)
+							} else {
+								fmt.Println("Failed to convert string to number")
+							}
+						}
+						fmt.Printf("%s\n", columnStringifiedValue)
+						fmt.Println("Array elements (integers):", numbers)
+					} else {
+						fmt.Println("Conversion to []byte failed")
+					}
+				} else {
+
+					fmt.Printf("%v\n", allRows[i][j])
+				}
 			default:
 				fmt.Println("Type not supported")
 			}

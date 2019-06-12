@@ -79,6 +79,13 @@ func (pgClient pgClient) GetColumnInfo(tableName string, schemaName string) ([]d
 	return columnsInfo, nil
 }
 
+// If a DB column has type (udt_name) text[] (data_type is ARRAY) then
+// when Rows.Scan() populates matching destination variable, this variable
+// will have Go type []uint8 (which is essentially byte array). Each byte
+// is decimal ASCII code so entire variable can be converted into a string.
+// Postgres defines that this string comes in form:
+//    {element1,element2,...elementN}
+// (there are no spaces between curly braces or between elements)
 func (pgClient pgClient) GetAllRows(tableName string) ([]([]interface{}), error) {
 	query := fmt.Sprintf("SELECT * FROM %s;", tableName)
 	rows, err := pgClient.db.Query(query)
