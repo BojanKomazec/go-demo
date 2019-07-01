@@ -16,7 +16,8 @@ type (
 
 	// Config represents application configuration that shall be obtained from the runtime environment
 	Config struct {
-		DB DbConfig
+		DB        DbConfig
+		OutputDir string
 	}
 
 	keyValueReader = func(key string) (value string, exists bool)
@@ -62,6 +63,11 @@ func newImpl(kvr keyValueReader) (*Config, error) {
 		return nil, err
 	}
 
+	outputDir, err := getStringValue("OUTPUT_DIR", kvr)
+	if err != nil {
+		return nil, err
+	}
+
 	return &Config{
 		DB: DbConfig{
 			connParams: dbclient.NewConnParams(
@@ -71,6 +77,7 @@ func newImpl(kvr keyValueReader) (*Config, error) {
 				dbUser,
 				dbPass),
 		},
+		OutputDir: outputDir,
 	}, nil
 }
 

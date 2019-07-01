@@ -8,12 +8,11 @@ import (
 
 	"github.com/BojanKomazec/go-demo/internal/pkg/config"
 	"github.com/BojanKomazec/go-demo/internal/pkg/dbclient"
-	"github.com/BojanKomazec/go-demo/internal/pkg/onerr"
 	"github.com/BojanKomazec/go-demo/internal/pkg/pgclient"
 )
 
 // ShowDemo func
-func ShowDemo(conf *config.Config) {
+func ShowDemo(conf *config.Config) error {
 	fmt.Println("pgclientdemo.ShowDemo()")
 
 	dbConnParams := dbclient.NewConnParams(
@@ -24,25 +23,38 @@ func ShowDemo(conf *config.Config) {
 		conf.DB.ConnParams().Password())
 
 	dbClient, err := pgclient.New(dbConnParams)
-	onerr.Panic(err)
+	if err != nil {
+		return err
+	}
 
 	defer dbClient.Close()
 
 	err = dbClient.Ping()
-	onerr.Panic(err)
+	if err != nil {
+		return err
+	}
 
 	fmt.Println("Successfully connected!")
 
 	tableNames, err := dbClient.GetTables()
-	onerr.Panic(err)
+	if err != nil {
+		return err
+	}
+
 	fmt.Println("Table names:", tableNames)
 
 	columnInfo, err := dbClient.GetColumnInfo(tableNames[0], "public")
-	onerr.Panic(err)
+	if err != nil {
+		return err
+	}
+
 	fmt.Println("Column info:", columnInfo)
 
 	allRows, err := dbClient.GetAllRows(tableNames[0])
-	onerr.Panic(err)
+	if err != nil {
+		return err
+	}
+
 	fmt.Println("All rows:", allRows)
 
 	for i := range allRows {
@@ -101,4 +113,6 @@ func ShowDemo(conf *config.Config) {
 			}
 		}
 	}
+
+	return nil
 }
