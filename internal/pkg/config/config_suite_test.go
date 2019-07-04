@@ -44,7 +44,7 @@ var _ = Describe("In package config", func() {
 	Describe("function newImpl", func() {
 		Context("when all required environment variables exist and have valid values", func() {
 			var kvr = func(key string) (value string, exists bool) {
-				if key == "DB_HOST" || key == "DB_NAME" || key == "DB_USER" || key == "DB_PASSWORD" {
+				if key == "DB_HOST" || key == "DB_NAME" || key == "DB_USER" || key == "DB_PASSWORD" || key == "OUTPUT_DIR" {
 					return uuid.New().String(), true
 				}
 
