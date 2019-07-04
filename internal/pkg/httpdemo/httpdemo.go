@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 
@@ -89,7 +90,7 @@ func downloadInParallelDemo(outputDir string) error {
 	}
 
 	var wg sync.WaitGroup
-	downloadsDirName := outputDir + "/downloads"
+	downloadsDirName := filepath.Join(outputDir, "downloads")
 	err := osdemo.CreateDirIfNotExist(downloadsDirName)
 	if err != nil {
 		return err
@@ -102,7 +103,7 @@ func downloadInParallelDemo(outputDir string) error {
 			return err
 		}
 		fmt.Println("parts =", parts)
-		fileName := downloadsDirName + "/" + strings.Join(parts, "_")
+		fileName := filepath.Join(downloadsDirName, strings.Join(parts, "_"))
 		fmt.Println("*********** fileName =", fileName)
 		go downloadFile(fileName, rawURL, &wg)
 	}
