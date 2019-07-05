@@ -1,8 +1,11 @@
 package osdemo
 
 import (
+	"errors"
 	"fmt"
+	"log"
 	"os"
+	"strconv"
 )
 
 // CreateDirIfNotExist func
@@ -49,17 +52,50 @@ func IsSymlink(fileName string) (bool, error) {
 }
 
 // WriteToFile func writes text to a file.
-// Function reurns an error if path to the file does not exist.
+// Function creates file if it does not exist.
 func WriteToFile(filePath string, text string) (int, error) {
-	bytesWritten := 0
-	var err error
+	f, err := os.Create(filePath)
+	if err != nil {
+		return 0, err
+	}
+	defer f.Close()
 
-	if f, err := os.Create(filePath); err == nil {
-		defer f.Close()
-		bytesWritten, err = f.WriteString(filePath)
+	return f.WriteString(filePath)
+}
+
+// GetFileSize func returns size of the file specified by file descriptor.
+// Returned size is in bytes.
+func GetFileSize(file *os.File) (int64, error) {
+	if file == nil {
+		return 0, errors.New("Argument is nil: file")
 	}
 
-	return bytesWritten, err
+	fi, err := file.Stat()
+	if err != nil {
+		return 0, fmt.Errorf("Failed to access file %s", (err.(*os.PathError)).Path)
+	}
+
+	return fi.Size(), nil
+}
+
+func demoGetFileSize() {
+	log.Println("demoGetFileSize()")
+
+	filePath := "./data-vol/demo/os/dummyfile.txt"
+	file, err := os.Open(filePath)
+	if err != nil {
+		log.Println(err)
+	}
+	defer file.Close()
+
+	fileSize, err := GetFileSize(file)
+	if err != nil {
+		log.Println(err)
+	}
+	fileSizeStr := strconv.FormatInt(fileSize, 10)
+	log.Printf("File %s --> Size: %s (bytes)", filePath, fileSizeStr)
+
+	log.Println("~demoGetFileSize()")
 }
 
 func demoWriteTextToFile() error {
@@ -124,6 +160,7 @@ func ShowDemo() {
 	fmt.Printf("\n\nosdemo.ShowDemo()\n\n")
 	demoWriteTextToFile()
 	demoCreateSymlink()
+	demoGetFileSize()
 	demoIsFileASymlink()
 	fmt.Printf("\n\n~osdemo.ShowDemo()\n\n")
 }

@@ -143,7 +143,7 @@ func hashCalculationDemo() {
 	// (3) vR6PxrS0kyJPaixGyXLE7YZ9tL0=
 	// (4) bd1e8fc6b4b493224f6a2c46c972c4ed867db4bd
 
-	// %x formats varue as HEX number with lowercase letters
+	// %x formats value as HEX number with lowercase letters
 	sha1hex := fmt.Sprintf("%x", sha1sum)
 	log.Printf("File: %s --> sha1: %s\n", filePath, sha1hex)
 
