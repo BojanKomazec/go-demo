@@ -3,7 +3,8 @@ GOCMD=go
 GINKGOCMD=ginkgo
 GOBUILD=$(GOCMD) build
 GOCLEAN=$(GOCMD) clean
-GOTEST=$(GINKGOCMD)
+GOTEST=$(GOCMD) test
+GINKGOTEST=$(GINKGOCMD)
 GOGET=$(GOCMD) get
 BINARY_NAME=go-demo
 BINARY_PATH=./bin/$(BINARY_NAME)
@@ -14,7 +15,26 @@ all: test build
 build:
 	$(GOBUILD) -o $(BINARY_PATH) -v $(MAIN_PATH)
 test:
-	$(GOTEST) --v -cover ./...
+	$(GINKGOTEST) --v ./...
+test-cover:
+	$(GINKGOTEST) --v -cover ./...
+test-bench:
+	# To save results for benchcmp tool, stram the output to .txt files:
+	#    $ make test-bench > [old,new].txt
+	$(GOTEST) --v -run=NONE -bench=. ./...
+test-bench-cpuprofile:
+	# This command performs CPU profilng for a specified package.
+	# It creates CPU profiling report file (named here "cpu.out").
+	# pkg is relative path to the package
+	# It is set via command line argument. Example:
+	#    $ make test-bench-cpuprofile pkg="./internal/pkg/datatypesdemo/"
+ifeq ($(pkg), )
+	@echo
+	@echo ERROR: Package path not specified. Use relative path to cwd.
+else
+	$(GOTEST) -run=NONE -bench=. -cpuprofile=cpu.out $(pkg)
+endif
+
 clean:
 	@echo 'Not implemented yet'
 # 	$(GOCLEAN)

@@ -1,3 +1,9 @@
+bin/
+
+*.log
+*.coverprofile
+*.txt
+
 # Binaries for programs and plugins
 *.exe
 *.exe~

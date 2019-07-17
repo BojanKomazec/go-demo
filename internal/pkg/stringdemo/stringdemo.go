@@ -2,6 +2,7 @@ package stringdemo
 
 import (
 	"fmt"
+	"log"
 	"strings"
 )
 
@@ -79,6 +80,55 @@ func trimDemo() {
 	// output: s4 = "{"name":"Bojan", "age": 40}"
 }
 
+// "{abcdefghijklmnopqrstuvwyz}"
+func trimPrefixSuffixDemo1(in string) {
+	s := in
+	s = strings.TrimPrefix(strings.TrimSuffix(s, "}"), "{")
+	fmt.Println("s =", s)
+}
+
+// "{abcdefghijklmnopqrstuvwyz}"
+func trimPrefixSuffixDemo2(in string) {
+	s := in
+	s = trimFirstRune(trimLastRune(s))
+	fmt.Println("s =", s)
+}
+
+func runeDemo() {
+	s := "中国 are some Chinese characters"
+	fmt.Println("len(s) =", len(s)) // 34
+	l := 0
+
+	// range on strings iterates over Unicode code points.
+	// The first value is the starting byte index of the rune
+	// and the second the rune itself.
+	for i, r := range s {
+		fmt.Printf("rune index = %d, rune = %v\n", i, r)
+		l++
+	}
+	fmt.Println("l =", l) // 30 (中 is one rune)
+}
+
+// taken from https://stackoverflow.com/a/48801414/404421
+func trimFirstRune(s string) string {
+	for i := range s {
+		if i > 0 {
+			// The value i is the index in s of the second
+			// rune.  Slice to remove the first rune.
+			return s[i:]
+		}
+	}
+	// There are 0 or 1 runes in the string.
+	return ""
+}
+
+func trimLastRune(s string) string {
+	i := 0
+	for i = range s {
+	}
+	return s[:i]
+}
+
 func splitDemo() {
 	fmt.Println("splitDemo()")
 	s1 := "abcdef"
@@ -92,8 +142,11 @@ func splitDemo() {
 
 // ShowDemo func
 func ShowDemo() {
+	log.Printf("\n\nstringdemo.ShowDemo()\n\n")
 	breakingLongStringsDemo()
+	runeDemo()
 	stringComparisonDemo()
 	trimDemo()
 	splitDemo()
+	log.Printf("\n\n~stringdemo.ShowDemo()\n\n")
 }

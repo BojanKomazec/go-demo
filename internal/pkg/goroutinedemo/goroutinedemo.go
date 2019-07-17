@@ -38,6 +38,10 @@ func demoClosuresCapturingLoopVariable() {
 	for i := 0; i < 5; i++ {
 		go func() {
 			// warning "loop variable i captured by func literal (go-vet)" is reported on i
+			// This is potentially unwanted behaviour as we want each goroutine to capture
+			// a new value of loop variable but this might not be the case as Go closures
+			// capture variables by reference. Loop might finish before goroutines start being
+			// executed.
 			fmt.Printf("goroutine #%d\n", i)
 		}()
 	}

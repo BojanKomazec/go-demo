@@ -6,7 +6,6 @@ import (
 	"github.com/BojanKomazec/go-demo/internal/pkg/config"
 	"github.com/BojanKomazec/go-demo/internal/pkg/cryptodemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/datatypesdemo"
-	"github.com/BojanKomazec/go-demo/internal/pkg/goroutinedemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/httpdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/jsondemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/mapdemo"
@@ -21,6 +20,7 @@ import (
 	// "github.com/BojanKomazec/go-demo/internal/pkg/bufiodemo"
 	// "github.com/BojanKomazec/go-demo/internal/pkg/fmtdemo"
 	// "github.com/BojanKomazec/go-demo/internal/pkg/function"
+	// "github.com/BojanKomazec/go-demo/internal/pkg/goroutinedemo"
 )
 
 func init() {
@@ -48,7 +48,7 @@ func main() {
 	// bufiodemo.ReadIntegersLineDemo()
 	cryptodemo.ShowDemo()
 	datatypesdemo.ShowDemo()
-	goroutinedemo.ShowDemo()
+	// goroutinedemo.ShowDemo()
 	httpdemo.ShowDemo(conf.OutputDir)
 	jsondemo.ShowDemo()
 	mapdemo.ShowDemo()

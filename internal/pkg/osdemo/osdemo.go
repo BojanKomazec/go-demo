@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path"
 	"strconv"
 )
 
@@ -24,11 +25,25 @@ func CreateSymlink(filePath, symLinkFilePath string) error {
 			fmt.Printf("Failed to unlink: %+v\n", err)
 			return fmt.Errorf("Failed to unlink: %+v", err)
 		}
-	} else if os.IsNotExist(err) {
-		fmt.Printf("Failed to check symlink: %+v\n", err)
+	} else {
+		if pathErr, ok := err.(*os.PathError); ok {
+			fmt.Printf("os.Lstat failed. Error: %s", pathErr.Error())
+		} else {
+			fmt.Printf("Failed to extract PathError from os.Lstat error")
+		}
+
+		if os.IsNotExist(err) {
+			fmt.Printf("Failed to check symlink: %+v\n", err)
+		}
 	}
-	err := os.Symlink(filePath, symLinkFilePath)
-	return err
+
+	if err := os.Symlink(filePath, symLinkFilePath); err != nil {
+		if linkErr, ok := err.(*os.LinkError); ok {
+			return fmt.Errorf("Creating symlink failed. Error: %s", linkErr.Error())
+		}
+		return err
+	}
+	return nil
 }
 
 // IsSymlink func checks if file at the specified path is a symlink.
@@ -98,11 +113,11 @@ func demoGetFileSize() {
 	log.Println("~demoGetFileSize()")
 }
 
-func demoWriteTextToFile() error {
+func demoWriteTextToFile(dirPath string, fileName string) error {
 	fmt.Println("demoWriteTextToFile()")
 	var err error
-	filePath := "./data-vol/demo/os/dummyfile.txt"
-	if err := CreateDirIfNotExist("./data-vol/demo/os/"); err != nil {
+	filePath := path.Join(dirPath, fileName)
+	if err := CreateDirIfNotExist(dirPath); err != nil {
 		return err
 	}
 	fmt.Println("Writing to file: ", filePath)
@@ -118,10 +133,13 @@ func demoWriteTextToFile() error {
 
 func demoCreateSymlink() error {
 	fmt.Println("demoCreateSymlink()")
-	filePath := "./data-vol/demo/os/dummyfile2.txt"
+	filePath, err := createAbsPath("./data-vol/demo/os/dummyfile2.txt")
+	if err != nil {
+		return err
+	}
 	symLinkFilePath := "./data-vol/demo/os/dummyfile2_sl.txt"
 	fmt.Printf("Creating symlink %s --> %s\n", symLinkFilePath, filePath)
-	err := os.Symlink(filePath, symLinkFilePath)
+	err = os.Symlink(filePath, symLinkFilePath)
 	if err != nil {
 		fmt.Printf("Failed to create symlink %s --> %s. Error: %v\n", symLinkFilePath, filePath, err)
 		return err
@@ -155,12 +173,45 @@ func demoIsFileASymlink() error {
 	return err
 }
 
+func demoCreateDirectorySymLink(dirPath string, dirSymLinkPath string) {
+	fmt.Println("demoCreateDirectorySymLink()")
+	if err := CreateSymlink(dirPath, dirSymLinkPath); err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("~demoCreateDirectorySymLink()")
+}
+
+func createAbsPath(relPath string) (string, error) {
+	wd, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+	// fmt.Println("Current working directory:", wd)
+	return path.Join(wd, relPath), nil
+}
+
 // ShowDemo func
 func ShowDemo() {
 	fmt.Printf("\n\nosdemo.ShowDemo()\n\n")
-	demoWriteTextToFile()
+
+	dirPath, err := createAbsPath("/data-vol/demo/os/dir1")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fileName := "dummyfile.txt"
+	demoWriteTextToFile(dirPath, fileName)
 	demoCreateSymlink()
 	demoGetFileSize()
 	demoIsFileASymlink()
+
+	dirSymLinkPath, err := createAbsPath("/data-vol/demo/os/dir1SymLink")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	demoCreateDirectorySymLink(dirPath, dirSymLinkPath)
 	fmt.Printf("\n\n~osdemo.ShowDemo()\n\n")
 }
