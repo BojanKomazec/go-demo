@@ -21,7 +21,9 @@ test-cover:
 test-bench:
 	# To save results for benchcmp tool, stram the output to .txt files:
 	#    $ make test-bench > [old,new].txt
-	$(GOTEST) --v -run=NONE -bench=. ./...
+	$(GOTEST) -run=NONE -bench=. ./...
+test-bench-mem:
+	$(GOTEST) -run=NONE -bench=. -benchmem ./...
 test-bench-cpuprofile:
 	# This command performs CPU profilng for a specified package.
 	# It creates CPU profiling report file (named here "cpu.out").
@@ -34,7 +36,6 @@ ifeq ($(pkg), )
 else
 	$(GOTEST) -run=NONE -bench=. -cpuprofile=cpu.out $(pkg)
 endif
-
 clean:
 	@echo 'Not implemented yet'
 # 	$(GOCLEAN)

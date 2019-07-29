@@ -80,18 +80,39 @@ func trimDemo() {
 	// output: s4 = "{"name":"Bojan", "age": 40}"
 }
 
+func trimPrefixSuffixCharacter(in, prefixChar, suffixChar string) string {
+	return strings.TrimPrefix(strings.TrimSuffix(in, suffixChar), prefixChar)
+}
+
 // "{abcdefghijklmnopqrstuvwyz}"
 func trimPrefixSuffixDemo1(in string) {
 	s := in
-	s = strings.TrimPrefix(strings.TrimSuffix(s, "}"), "{")
+	s = trimPrefixSuffixCharacter(s, "}", "{")
 	fmt.Println("s =", s)
+}
+
+func trimFirsLastRune(in string) string {
+	return trimFirstRune(trimLastRune(in))
 }
 
 // "{abcdefghijklmnopqrstuvwyz}"
 func trimPrefixSuffixDemo2(in string) {
 	s := in
-	s = trimFirstRune(trimLastRune(s))
+	s = trimFirsLastRune(s)
 	fmt.Println("s =", s)
+}
+
+func getRunesCount(s string) int {
+	n := 0
+	for range s {
+		n++
+	}
+	return n
+}
+
+func getRunesCount2(s string) int {
+	// since Go v1.11 (simpler and faster; no copies are being made)
+	return len([]rune(s))
 }
 
 func runeDemo() {
@@ -99,7 +120,7 @@ func runeDemo() {
 	fmt.Println("len(s) =", len(s)) // 34
 	l := 0
 
-	// range on strings iterates over Unicode code points.
+	// range on strings iterates over Unicode code points (runes).
 	// The first value is the starting byte index of the rune
 	// and the second the rune itself.
 	for i, r := range s {

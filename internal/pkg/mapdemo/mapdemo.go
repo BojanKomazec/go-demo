@@ -32,6 +32,28 @@ func demoCreateAndPopulateMap() {
 	fmt.Println("testMap = ", testMap)
 }
 
+func demoEmptyMap() {
+	m := make(map[string]string)
+	m["a"] = "A"
+	m["b"] = "B"
+	fmt.Println("m = ", m)
+
+	// before Go v1.11
+	m = make(map[string]string)
+	m["c"] = "C"
+	m["d"] = "D"
+	fmt.Println("m = ", m)
+
+	// after Go v1.11 (faster)
+	// compiler will clear old map but will not allocate new space
+	for key := range m {
+		delete(m, key)
+	}
+	fmt.Println("m = ", m)
+}
+
+// ShowDemo func
 func ShowDemo() {
 	demoCreateAndPopulateMap()
+	demoEmptyMap()
 }
