@@ -154,17 +154,26 @@ func splitDemo() {
 	fmt.Println("splitDemo()")
 	s1 := "abcdef"
 
-	// if string does not contain separator, entire original string is returned
+	// strings.Split() returns a slice.
+	// If string does not contain separator, entire original string is returned.
 	segments := strings.Split(s1, "-")
 	fmt.Println("segments =", segments)
 	// output: segments = [abcdef]
 	fmt.Println("~splitDemo()")
 }
 
+func joiningStringsDemo() {
+	arr := [...]string{"This", "is", "now", "a", "long", "string"}
+	// strings.Join has a slice as its first argument => we need to convert an array (all arrays in Go are fix-sized!)
+	// to a slice (which describes a portion of an array and is variable-sized)
+	log.Println(strings.Join(arr[:], " "))
+}
+
 // ShowDemo func
 func ShowDemo() {
 	log.Printf("\n\nstringdemo.ShowDemo()\n\n")
 	breakingLongStringsDemo()
+	joiningStringsDemo()
 	runeDemo()
 	stringComparisonDemo()
 	trimDemo()

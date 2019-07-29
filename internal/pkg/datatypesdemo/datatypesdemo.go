@@ -18,7 +18,7 @@ func demoTypeAssertion() {
 	// fmt.Println("i =", i)
 }
 
-func demoDeclaration() {
+func demoArrayDeclaration() {
 	arr1 := [3]string{"AA", "BB", "CC"}
 	fmt.Println("arr1 =", arr1)
 	fmt.Println("len(arr1) =", len(arr1))
@@ -31,7 +31,7 @@ func demoDeclaration() {
 }
 
 func arrayDemo() {
-	demoDeclaration()
+	demoArrayDeclaration()
 }
 
 // makeRange creates an increasing sequence of integers
@@ -49,6 +49,22 @@ func makeRange(min, max int) []int {
 }
 
 func sliceDemo() {
+	// slice declaration
+	// (!) don't mix []T{...} (slice declaration) with [...]T{...} (array declaration)
+	sliceOfStrings := []string{"AA", "BB", "CC"}
+	fmt.Println("sliceOfStrings =", sliceOfStrings)
+	fmt.Println("len(sliceOfStrings) =", len(sliceOfStrings))
+
+	// converting array to slice
+	// len() is defined for both arrays and slices
+	arrayOfStrings := [...]string{"DD", "EE", "FF"}
+	fmt.Println("arrayOfStrings =", arrayOfStrings)
+	fmt.Println("len(arrayOfStrings) =", len(arrayOfStrings))
+
+	sliceOfStrings2 := arrayOfStrings[:]
+	fmt.Println("sliceOfStrings2 =", sliceOfStrings2)
+	fmt.Println("len(sliceOfStrings2) =", len(sliceOfStrings2))
+
 	integersSequence := makeRange(3, 11)
 	for i, v := range integersSequence {
 		fmt.Printf("integersSequence[%d] = %d\n", i, v)
