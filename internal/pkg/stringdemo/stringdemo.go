@@ -6,6 +6,19 @@ import (
 	"strings"
 )
 
+// Transform returns modified input string
+type Transform func(s string) string
+
+// Map iterates through string slice, modifies each string and returns a slice with modified strings.
+func Map(in []string, t Transform) []string {
+	// out := make([]string, len(in)) // creates a slice which already contains 3 elements (empty strings)
+	out := make([]string, 0, len(in)) // creates a slice which contains 0 but has capacity to hold 3 elements (3 strings)
+	for _, s := range in {
+		out = append(out, t(s))
+	}
+	return out
+}
+
 func breakingLongStringsDemo() {
 	// s1 is a "raw string literal" (character sequence between back quotes)
 	s1 := `This is
