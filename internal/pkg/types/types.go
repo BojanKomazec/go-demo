@@ -72,6 +72,8 @@ func EnumDemo() {
 	fmt.Println("day =", day) // Output: day = Monday1 // We don't want this to be possible
 
 	var strDay string
+
+	// cast (type conversion) of enumerator to string
 	strDay = string(Monday)
 	fmt.Println("strDay =", strDay)
 	strDay = Tuesday

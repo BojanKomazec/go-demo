@@ -36,7 +36,7 @@ func BenchmarkTrimFirsLastRune(b *testing.B) {
 
 var _ = Describe("StringDemo", func() {
 	DescribeTable("Map()",
-		func(in []string, t Transform, expected []string) {
+		func(in []string, t Transformer, expected []string) {
 			Expect(Map(in, t)).To(Equal(expected))
 		},
 		Entry(

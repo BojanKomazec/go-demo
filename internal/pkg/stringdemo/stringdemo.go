@@ -6,11 +6,11 @@ import (
 	"strings"
 )
 
-// Transform returns modified input string
-type Transform func(s string) string
+// Transformer returns modified input string
+type Transformer func(s string) string
 
 // Map iterates through string slice, modifies each string and returns a slice with modified strings.
-func Map(in []string, t Transform) []string {
+func Map(in []string, t Transformer) []string {
 	// out := make([]string, len(in)) // creates a slice which already contains 3 elements (empty strings)
 	out := make([]string, 0, len(in)) // creates a slice which contains 0 but has capacity to hold 3 elements (3 strings)
 	for _, s := range in {
@@ -180,6 +180,10 @@ func joiningStringsDemo() {
 	// strings.Join has a slice as its first argument => we need to convert an array (all arrays in Go are fix-sized!)
 	// to a slice (which describes a portion of an array and is variable-sized)
 	log.Println(strings.Join(arr[:], " "))
+
+	// we could have avoided the need for convertion array to slice by declaring variable as a slice at the very beginning:
+	slice := []string{"This", "is", "now", "a", "long", "string"}
+	log.Println(strings.Join(slice, " "))
 }
 
 // ShowDemo func
