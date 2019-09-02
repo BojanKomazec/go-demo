@@ -55,6 +55,9 @@ func sliceDemo() {
 	fmt.Println("sliceOfStrings =", sliceOfStrings)
 	fmt.Println("len(sliceOfStrings) =", len(sliceOfStrings))
 
+	// append one or more elements to slice
+	sliceOfStrings = append(sliceOfStrings, "appended1", "appended2", "appended3")
+
 	// converting array to slice
 	// len() is defined for both arrays and slices
 	arrayOfStrings := [...]string{"DD", "EE", "FF"}

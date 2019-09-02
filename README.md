@@ -27,6 +27,15 @@ To stop this Docker container, run:
 $ docker stop go-demo
 ```
 
+## Running go-demo on the local dev host
+
+`go run` compiles go code and then runs the binary.
+
+```
+$ go run cmd/main.go
+```
+
+
 ## DB and test data
 
 To spin off a Postgres instance, clone https://github.com/BojanKomazec/postgres-demo and launch it with docker-compose.

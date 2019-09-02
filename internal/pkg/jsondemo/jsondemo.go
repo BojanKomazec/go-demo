@@ -1,15 +1,25 @@
+// Use https://jsonlint.com/ for verifying whether JSON is valid or not.
+// Use https://nosmileface.dev/jsondiff/ to compare two JSONs.
+
 package jsondemo
 
 import (
 	"encoding/json"
 	"fmt"
 	"strings"
+
+	"github.com/nsf/jsondiff"
+	"github.com/yudai/gojsondiff"
+	// import "github.com/yazgazan/jaydiff" is a program, not an importable package
+	// "github.com/yazgazan/jaydiff"
 )
 
 // Struct fields have to be exported (start with capital letter) so json
 // package can access them.
 // Case of characters in struct field name does not need to match the case
 // in JSON.
+// If we want to marshal this struct to JSON where property names start with small letter,
+// we'd need to use `json:"age"` etc...
 type person struct {
 	Age  int
 	Name string
@@ -20,6 +30,11 @@ type person struct {
 	// will remain empty after unmarshalling unless we explicitly declare the name of the matching
 	// key in JSON via `json:"key_name">`
 	HomeAddress string `json:"home_address"`
+}
+
+// personRegistry is JSON array of person elements
+type personRegistry struct {
+	collection []person
 }
 
 type attachment struct {
@@ -66,7 +81,29 @@ type myStruct4 struct {
 	Value3 myStruct3 `json:"example4,omitempty"`
 }
 
+var jsonPersons = `[
+	{
+		"age": 28,
+		"name": "Ada",
+		"home_address": "London"
+	},
+	{
+		"age": 32,
+		"name": "Nevile",
+		"home_address": "Colchester"
+	}
+]`
+
+var jsonPersons2 = `[
+	{
+		"age": 28,
+		"name": "Ada",
+		"home_address": "London"
+	}
+]`
+
 func demoStructToJSON() {
+	fmt.Printf("\njsondemo.demoStructToJSON()\n")
 	person := &person{Age: 40, Name: "Bojan", HomeAddress: "Kent, UK"}
 	b, err := json.Marshal(person)
 	if err != nil {
@@ -136,11 +173,66 @@ func unmarshalJSONWithRootArrayDemo() {
 	// json := ""{\"id\":6643,\"url\":\"https://dev.avastbrowser.com/wp-content/uploads/2019/06/AVGBrowserInstaller-75.0.817.82.exe\",\"slug\":\"avgbrowserinstaller-75-0-817-82\",\"title\":\"AVGBrowserInstaller-75.0.817.82\",\"description\":\"\",\"caption\":\"\",\"parent\":6642,\"mime_type\":\"application/x-msdownload\"}","{\"id\":6644,\"url\":\"https://dev.avastbrowser.com/wp-content/uploads/2019/06/AVGBrowserInstallerIncremental-74.0.773.110-75.0.817.82.exe\",\"slug\":\"avgbrowserinstallerincremental-74-0-773-110-75-0-817-82\",\"title\":\"AVGBrowserInstallerIncremental-74.0.773.110-75.0.817.82\",\"description\":\"\",\"caption\":\"\",\"parent\":6642,\"mime_type\":\"application/x-msdownload\"}","{\"id\":6645,\"url\":\"https://dev.avastbrowser.com/wp-content/uploads/2019/06/AVGBrowserInstallerIncremental-74.0.783.133-75.0.817.82.exe\",\"slug\":\"avgbrowserinstallerincremental-74-0-783-133-75-0-817-82\",\"title\":\"AVGBrowserInstallerIncremental-74.0.783.133-75.0.817.82\",\"description\":\"\",\"caption\":\"\",\"parent\":6642,\"mime_type\":\"application/x-msdownload\"}","{\"id\":6646,\"url\":\"https://dev.avastbrowser.com/wp-content/uploads/2019/06/AVGBrowserInstallerIncremental-74.0.791.133-75.0.817.82.exe\",\"slug\":\"avgbrowserinstallerincremental-74-0-791-133-75-0-817-82\",\"title\":\"AVGBrowserInstallerIncremental-74.0.791.133-75.0.817.82\",\"description\":\"\",\"caption\":\"\",\"parent\":6642,\"mime_type\":\"application/x-msdownload\"}""
 }
 
+func jsonArrayDemo() {
+	jsonPersons := `
+[
+	{
+		"age": 28,
+		"name": "Ada",
+		"home_address": "London"
+	},
+	{
+		"age": 32,
+		"name": "Nevile",
+		"home_address": "Colchester"
+	}
+]`
+	var r personRegistry
+	err := json.Unmarshal([]byte(jsonPersons), &r)
+	if err != nil {
+		fmt.Println("err =", err)
+	}
+}
+
+func jsonDiffDemo() {
+	// opts := jsondiff.DefaultConsoleOptions()
+	opts := jsondiff.Options{
+		Added: jsondiff.Tag{Begin: "\033[0;32m", End: "\033[0m"},
+		// Prefix:  "prefix",
+		Removed: jsondiff.Tag{Begin: "\033[0;31m", End: "\033[0m"},
+		// Removed: jsondiff.Tag{Begin: "", End: ""},
+		Changed: jsondiff.Tag{Begin: "\033[0;33m", End: "\033[0m"},
+		Indent:  "    ",
+	}
+	diff, desc := jsondiff.Compare([]byte(jsonPersons), []byte(jsonPersons2), &opts)
+	fmt.Printf("diff = %s\ndesc = %s\n", diff.String(), desc)
+}
+
+// CLI version also gives an error (@todo: report it to the package author):
+//    $ jd ./internal/pkg/jsondemo/test_data/left.json  ./internal/pkg/jsondemo/test_data/right.json
+//    Failed to unmarshal file: json: cannot unmarshal array into Go value of type map[string]interface {}
+func gojsondiffDemo() {
+	differ := gojsondiff.New()
+	diff, err := differ.Compare([]byte(jsonPersons), []byte(jsonPersons2))
+	if err != nil {
+		fmt.Println("err =", err)
+		return
+	}
+	fmt.Println("diff.Deltas() =", diff.Deltas())
+}
+
+func jaydiffDemo() {
+}
+
 // ShowDemo func
 func ShowDemo() {
 	fmt.Printf("\n\njsondemo.ShowDemo()\n\n")
 	demoStructToJSON()
 	demo1()
+	jsonArrayDemo()
 	unmarshalJSONWithSingleObjectDemo()
+	jsonDiffDemo()
+	gojsondiffDemo()
+	jaydiffDemo()
 	fmt.Printf("\n\n~jsondemo.ShowDemo()\n")
 }
