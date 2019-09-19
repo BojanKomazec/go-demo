@@ -3,6 +3,7 @@ bin/
 *.log
 *.coverprofile
 *.txt
+!txtfile.txt
 
 # Binaries for programs and plugins
 *.exe

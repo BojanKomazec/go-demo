@@ -9,6 +9,7 @@ import (
 	"github.com/BojanKomazec/go-demo/internal/pkg/errordemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/function"
 	"github.com/BojanKomazec/go-demo/internal/pkg/httpdemo"
+	"github.com/BojanKomazec/go-demo/internal/pkg/iodemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/jsondemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/mapdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/onerr"
@@ -54,6 +55,7 @@ func main() {
 	errordemo.ShowDemo()
 	function.ShowDemo()
 	httpdemo.ShowDemo(conf.OutputDir)
+	iodemo.ShowDemo()
 	jsondemo.ShowDemo()
 	mapdemo.ShowDemo()
 	osdemo.ShowDemo()
