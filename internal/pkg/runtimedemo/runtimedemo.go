@@ -32,6 +32,8 @@ func GoRoutineCountBackgroundMonitor() {
 
 // ShowDemo func
 func ShowDemo() {
+	fmt.Printf("\n\nruntimedemo.ShowDemo()\n\n")
 	cpuTest()
 	setMaxCPUNumTest()
+	fmt.Printf("\n\n~runtimedemo.ShowDemo()\n\n")
 }

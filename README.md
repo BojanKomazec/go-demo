@@ -9,7 +9,7 @@ To build the image based on the Dockerfile, use;
 $ docker build -t go-demo .
 ```
 
-Before running go-demo container, use `$ docker network ls` to find the name of the network that PostgresDB container is conneted to and then `$ docker inspect <network_name>` to find the IP address of the Postgres DB container.
+Before running go-demo container, use `$ docker network ls` to find the name of the network that PostgresDB container is connected to and then `$ docker inspect <network_name>` to find the IP address of the Postgres DB container.
 
 We can now run the container and pass DB network, IP and other configuration. `docker run` command can look like this:
 ```
@@ -33,6 +33,12 @@ $ docker stop go-demo
 
 ```
 $ go run cmd/main.go
+```
+To build an app and run it with command line args:
+```
+$ make build-linux && ./bin/go-demo -help
+$ make build-linux && ./bin/go-demo -postgres
+$ make build-linux && ./bin/go-demo -postgres=false
 ```
 
 

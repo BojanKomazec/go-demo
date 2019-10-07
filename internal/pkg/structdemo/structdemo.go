@@ -11,6 +11,29 @@ type person struct {
 	age  int
 }
 
+func (person person) SetNameValue(name string) {
+	person.name = name
+}
+
+func (person *person) SetNamePointer(name string) {
+	person.name = name
+}
+
+func testFunctionReceivers() {
+	personA := person{
+		name: "undefined",
+		age:  0,
+	}
+
+	fmt.Println("personA name =", personA.name) // undefined
+
+	personA.SetNameValue("Name1")
+	fmt.Println("personA name =", personA.name) // undefined
+
+	personA.SetNamePointer("Name2")
+	fmt.Println("personA name =", personA.name) // Name2
+}
+
 type personRegistry struct {
 	collection []person
 }
@@ -44,5 +67,8 @@ func ShowDemo() {
 	// e2 := employee.Employee{"John", "Smith", 12}
 
 	emptyStructDemo()
+
+	testFunctionReceivers()
+
 	fmt.Printf("\n\n~structdemo.ShowDemo()\n\n")
 }

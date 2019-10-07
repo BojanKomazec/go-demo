@@ -1,7 +1,10 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"log"
+	"os"
 
 	"github.com/BojanKomazec/go-demo/internal/pkg/config"
 	"github.com/BojanKomazec/go-demo/internal/pkg/cryptodemo"
@@ -15,9 +18,11 @@ import (
 	"github.com/BojanKomazec/go-demo/internal/pkg/onerr"
 	"github.com/BojanKomazec/go-demo/internal/pkg/osdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/pathdemo"
+	"github.com/BojanKomazec/go-demo/internal/pkg/pgclientdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/randdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/regexdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/runtimedemo"
+	"github.com/BojanKomazec/go-demo/internal/pkg/sqlxdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/stringdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/structdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/types"
@@ -27,7 +32,23 @@ import (
 	// "github.com/BojanKomazec/go-demo/internal/pkg/goroutinedemo"
 )
 
+var printHelp bool
+var runPostgresDemo bool
+
+// https://stackoverflow.com/questions/24790175/when-is-the-init-function-run
+// init() is guaranteed to run before main() is called.
 func init() {
+	flag.BoolVar(&printHelp, "help", false, "print this help")
+	flag.BoolVar(&runPostgresDemo, "postgres", false, "[true|false] - run Postgres Client demo (requires PostgresDB running prior to this application)")
+	flag.Parse()
+
+	if printHelp {
+		flag.PrintDefaults()
+		os.Exit(0)
+	}
+
+	fmt.Println("runPostgresDemo =", runPostgresDemo)
+
 	err := godotenv.Load()
 	if err != nil { // not critical
 		log.Println("WARNING: loading .env file failed")
@@ -42,29 +63,36 @@ func main() {
 		onerr.Panic(err)
 	}
 
-	// err = pgclientdemo.ShowDemo(conf)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
+	if runPostgresDemo {
+		err = pgclientdemo.ShowDemo(conf)
+		if err != nil {
+			fmt.Println(err)
+		}
 
-	// fmtdemo.ReadIntegersFromLine()
-	// bufiodemo.ReadIntegersLineDemo()
-	cryptodemo.ShowDemo()
-	datatypesdemo.ShowDemo()
-	// goroutinedemo.ShowDemo()
-	errordemo.ShowDemo()
-	function.ShowDemo()
-	httpdemo.ShowDemo(conf.OutputDir)
-	iodemo.ShowDemo()
-	jsondemo.ShowDemo()
-	mapdemo.ShowDemo()
-	osdemo.ShowDemo()
-	pathdemo.ShowDemo()
-	randdemo.ShowDemo()
-	regexdemo.ShowDemo()
-	runtimedemo.ShowDemo()
-	stringdemo.ShowDemo()
-	structdemo.ShowDemo()
-	types.EnumDemo()
-	types.IotaDemo()
+		err = sqlxdemo.ShowDemo(conf)
+		if err != nil {
+			fmt.Println(err)
+		}
+	} else {
+		// fmtdemo.ReadIntegersFromLine()
+		// bufiodemo.ReadIntegersLineDemo()
+		cryptodemo.ShowDemo()
+		datatypesdemo.ShowDemo()
+		// goroutinedemo.ShowDemo()
+		errordemo.ShowDemo()
+		function.ShowDemo()
+		httpdemo.ShowDemo(conf.OutputDir)
+		iodemo.ShowDemo()
+		jsondemo.ShowDemo()
+		mapdemo.ShowDemo()
+		osdemo.ShowDemo()
+		pathdemo.ShowDemo()
+		randdemo.ShowDemo()
+		regexdemo.ShowDemo()
+		runtimedemo.ShowDemo()
+		stringdemo.ShowDemo()
+		structdemo.ShowDemo()
+		types.EnumDemo()
+		types.IotaDemo()
+	}
 }

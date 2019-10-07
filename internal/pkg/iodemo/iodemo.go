@@ -16,6 +16,7 @@ func ioutilReadAllDemo() {
 
 	b, err := ioutil.ReadAll(file)
 	fmt.Print(b)
+	fmt.Print(string(b))
 }
 
 // ShowDemo func

@@ -44,6 +44,7 @@ run:
 	$(GOBUILD) -o $(BINARY_PATH) -v $(MAIN_PATH)
 	./$(BINARY_PATH)
 deps:
+	$(GOGET) -u github.com/jmoiron/sqlx
 	$(GOGET) -u github.com/joho/godotenv
 	$(GOGET) -u github.com/lib/pq
 	$(GOGET) -u github.com/nsf/jsondiff
