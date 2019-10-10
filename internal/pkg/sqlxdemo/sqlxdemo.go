@@ -19,6 +19,7 @@ type Resource struct {
 }
 
 // Contact struct
+// fields must be exported (capitalized) in order for sqlx to be able to write into them
 // pg array types have to be used for variables into which array data is to be read from Postgres DB:
 //    pq.StringArray instead of []string
 //    pq.Int64Array instead of []int
@@ -28,6 +29,20 @@ type Contact struct {
 	Phones       pq.StringArray
 	MagicNumbers pq.Int64Array  `db:"magic_numbers"`
 	Resources    pq.StringArray // []Resource
+}
+
+// ContactSimple struct
+type ContactSimple struct {
+	ID    int
+	Name  string
+	Phone string `db:"phones"` // phones[n] in query will return a single value here
+}
+
+// ContactSimpleAlias struct
+type ContactSimpleAlias struct {
+	ID    int
+	Name  string
+	Phone string `db:"main_phone"` // main_phone is an alias for phones[1] where "phones" is the column name
 }
 
 // ShowDemo function
@@ -81,6 +96,61 @@ FROM contacts`)
 			// @todo here convert string to json data struct
 		}
 	}
+
+	log.Printf("\n\nDemo using placeholder parameters:")
+	// It is not possible to substitute identifier names (like table name), only values.
+	// source: https://www.postgresql.org/docs/9.1/xfunc-sql.html
+
+	var c Contact
+
+	// note that $1, $2, ...notation is used (at least for Postgres)
+	err = db.QueryRowx(`
+SELECT *
+FROM contacts
+WHERE id = $1`, 1).StructScan(&c)
+	if err != nil {
+		return err
+	}
+	log.Printf("\n\n%v %v %v %v %v\n", c.ID, c.Name, c.Phones, c.MagicNumbers, c.Resources)
+
+	log.Printf("\n\nDemo selecting single element from column which is an array (placeholder is int):")
+
+	var contactSimple ContactSimple
+	err = db.QueryRowx(`
+SELECT id, name, phones[1]
+FROM contacts
+WHERE id = $1`, 1).StructScan(&contactSimple)
+
+	if err != nil {
+		return err
+	}
+
+	log.Printf("\n\n%v %v %v\n", contactSimple.ID, contactSimple.Name, contactSimple.Phone)
+
+	log.Printf("\n\nDemo selecting single element from column which is an array (placeholder is string):")
+
+	err = db.QueryRowx(`
+SELECT id, name, phones[1]
+FROM contacts
+WHERE name = $1`, "Jeremy Clarckson").StructScan(&contactSimple)
+
+	if err != nil {
+		return err
+	}
+
+	log.Printf("\n\n%v %v %v\n", contactSimple.ID, contactSimple.Name, contactSimple.Phone)
+
+	log.Printf("\n\nDemo selecting column with alias name in the query:")
+
+	var contactSimpleAlias ContactSimpleAlias
+	err = db.QueryRowx(`
+SELECT id, name, phones[1] as main_phone
+FROM contacts
+WHERE id = $1`, 1).StructScan(&contactSimpleAlias)
+	if err != nil {
+		return err
+	}
+	log.Printf("\n\n%v %v %v\n", contactSimpleAlias.ID, contactSimpleAlias.Name, contactSimpleAlias.Phone)
 
 	return nil
 }

@@ -1,8 +1,12 @@
 package pgclientdemo
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
+	"log"
 	"reflect"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -10,6 +14,92 @@ import (
 	"github.com/BojanKomazec/go-demo/internal/pkg/dbclient"
 	"github.com/BojanKomazec/go-demo/internal/pkg/pgclient"
 )
+
+// func executeQuery(dbClient dbclient.DbClient, query string) ([][]interface{}, error) {
+// 	var err error
+// 	log.Println("executeQuery(). query =", query)
+
+// 	rows, err := dbClient.Query(query)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	return rows, nil
+// }
+
+type resource struct {
+	URL         string
+	Description string `json:"desc"`
+}
+
+func getResources(rawData interface{}) ([]resource, error) {
+	if rawData == nil {
+		return nil, errors.New("rawData is nil")
+	}
+
+	resourceValue := string(rawData.([]uint8))
+
+	// Postgres creates JSON[] value by listing all JSONs between a pair of curly braces.
+	// Each JSON is put within a pair of double quotation marks.
+	// We need first to remove outer curly braces.
+	resourceValue = strings.TrimPrefix(strings.TrimSuffix(resourceValue, "}"), "{")
+
+	// Although JSONs in JSON[] are separated by comma character we can't simply split
+	// JSON[] value (string) by using comma as a separator as comma characters appear inside
+	// each JSON as a regular separator of JSON key-value pairs. We need to use RegEx to
+	// extract each substring (JSON) in form "{...}":
+	regExp := "\"{.*?}\""
+	regExpObj, err := regexp.Compile(regExp)
+	if err != nil {
+		return nil, err
+	}
+	jsonResources := regExpObj.FindAllString(resourceValue, -1)
+	log.Println("jsonResources =", jsonResources)
+
+	resources := make([]resource, 0)
+
+	for i, stringifiedResource := range jsonResources {
+		log.Printf("%d. stringifiedResource = %s\n", i, stringifiedResource)
+
+		resource, err := getResource(stringifiedResource)
+		if err != nil {
+			return nil, err
+		}
+
+		resources = append(resources, resource)
+	}
+
+	return resources, nil
+}
+
+func getResource(stringifiedResource string) (resource, error) {
+	var resource resource
+	// Postgres escapes each special character (like double quote).
+	// Before deserializing JSON string value we have to remove all escape characters.
+	jsonResource, err := strconv.Unquote(stringifiedResource)
+	if err != nil {
+		return resource, err
+	}
+
+	log.Println("jsonResource (unquoted) = ", jsonResource)
+	err = json.Unmarshal([]byte(jsonResource), &resource)
+	if err != nil {
+		log.Println("error: ", err)
+		return resource, err
+	}
+	log.Printf("resource = %+v\n", resource)
+	return resource, nil
+}
+
+// rawData contains string
+func getString(rawData interface{}) (string, error) {
+	if rawData == nil {
+		return "", errors.New("String value not provided")
+	}
+
+	// each string array in given DB column contains a single string
+	return rawData.(string), nil
+}
 
 func readFromDBDemo(conf *config.Config) error {
 	dbConnParams := dbclient.NewConnParams(
@@ -115,7 +205,7 @@ func readFromDBDemo(conf *config.Config) error {
 		}
 
 		// if we know in advance type (and/or name) of each column we can manually map column value to data
-		// name, err := getString(row[1]) // row[1] is of type TEXT; function returns (string, error)
+		// name, err := getString(row[1]) // row[1] is of type TEXT; func getString(rawData interface{}) (string, error)
 		// if err != nil {
 		// 	log.Println(err)
 		// 	continue
@@ -133,7 +223,7 @@ func readFromDBDemo(conf *config.Config) error {
 		// 	continue
 		// }
 
-		// attachments, err := getResources(row[4]) // row[4] is of type json[]; function returns ([]resource, error) where resource is struct that matches json
+		// attachments, err := getResources(row[4]) // row[4] is of type json[]; func getResources(rawData interface{}) ([]resource, error)  where resource is struct that matches json
 		// if err != nil {
 		// 	log.Println(err)
 		// 	continue

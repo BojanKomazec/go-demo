@@ -19,13 +19,25 @@ type (
 
 	// DbClient interface defines a common DB client behaviour
 	DbClient interface {
-		Ping() error
-		GetTables() ([]string, error)
-		GetColumnInfo(tableName string, schemaName string) ([]ColumnInfo, error)
+		Close()
 		// string argument specifies the name of the table
 		// Return value is a slice of slices.
 		GetAllRows(string) ([]([]interface{}), error)
-		Close()
+		GetColumnInfo(tableName string, schemaName string) ([]ColumnInfo, error)
+		GetTables() ([]string, error)
+		ListTables() error
+		Ping() error
+		// Executes query and returns entire query result at once.
+		Query(query string) (result [][]interface{}, err error)
+		// Executes query which returns a single columns of text array type.
+		// Returns entire query result at once.
+		// Returns error if:
+		//  - query result is not a single column of this type
+		//  - RDBM does not implement text array data type. PostgreSQL and
+		//    Oracle have support for arrays but MySQL does not.
+		//  - query execution fails
+		//  - data type conversion fails
+		ReadColumnTextArray(query string) (result [][]string, err error)
 	}
 
 	// New is a DbClient factory method
