@@ -5,6 +5,20 @@ import (
 	"fmt"
 )
 
+// Go does not have optional parameters nor does it support method overloading.
+
+// Regarding optional parameters, we can use default values of the type in some cases.
+// The caller has to use default values explicitly
+func defaultParameterValueDemo(stringArg string, intArg int) {
+	if stringArg == "" {
+		// default value used
+	}
+
+	if intArg == 0 {
+		// default value used
+	}
+}
+
 // VariadicFunction - variadic function example
 func variadicFunction(args ...interface{}) {
 	fmt.Printf("\nvariadicFunction()\n")

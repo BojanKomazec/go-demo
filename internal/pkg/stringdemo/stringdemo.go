@@ -186,14 +186,59 @@ func joiningStringsDemo() {
 	log.Println(strings.Join(slice, " "))
 }
 
+func replaceDemo() {
+	s1 := "This-is-some-1-2-3-4-text.3x3"
+	fmt.Println("s1 (before removing substring) =", s1)
+
+	// strings.Replace() can be used for removing a substring from a string
+	s1 = strings.Replace(s1, "-text", "", -1)
+	fmt.Println("s1 (after removing substring) =", s1)
+}
+
+func findIndexOfSubstringDemo() {
+	strs := []string{
+		"abcdefgh",
+		"estrsfghijk",
+	}
+
+	substr := "def"
+
+	for _, s := range strs {
+		i := strings.Index(s, substr)
+		if i == -1 {
+			fmt.Printf("String %s does not contain substring %s.\n", s, substr)
+		} else {
+			fmt.Printf("String %s contains substring %s at starting index %d.\n", s, substr, i)
+		}
+	}
+}
+
+func extractSubstringDemo() {
+	s := "abcdefghi"
+	substrIndex := []int{2, 5}
+	substr := s[substrIndex[0]:substrIndex[1]]
+	fmt.Printf("Substring of %s at slice indexes [%d, %d] is %s\n", s, substrIndex[0], substrIndex[1], substr)
+}
+
+func trimLaeadingAndTrailingCharactersFromSet() {
+	s := "$^abcdefg,.*"
+	cutset := ".,*^$"
+	out := strings.Trim(s, cutset)
+	fmt.Printf("Input string: %s. Cutset: %s. Output string: %s\n", s, cutset, out)
+}
+
 // ShowDemo func
 func ShowDemo() {
 	log.Printf("\n\nstringdemo.ShowDemo()\n\n")
 	breakingLongStringsDemo()
+	extractSubstringDemo()
+	findIndexOfSubstringDemo()
 	joiningStringsDemo()
+	replaceDemo()
 	runeDemo()
 	stringComparisonDemo()
 	trimDemo()
+	trimLaeadingAndTrailingCharactersFromSet()
 	splitDemo()
 	log.Printf("\n\n~stringdemo.ShowDemo()\n\n")
 }
