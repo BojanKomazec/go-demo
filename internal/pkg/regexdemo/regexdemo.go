@@ -70,6 +70,7 @@ func demoExtractAnyCharactersBetweenAndIncludingTwoNumbers() {
 		"LeadingText-1.22-TrailingText",
 		"LeadingText-11.22-TrailingText",
 		"LeadingText-1234-TrailingText",
+		"LeadingText-1234-TrailingText-5678", // it should extract only first match - 1234
 	}
 
 	regex, err := regexp.Compile("\\d(.*\\d)*")
@@ -82,7 +83,45 @@ func demoExtractAnyCharactersBetweenAndIncludingTwoNumbers() {
 		}
 	}
 
+	regex2, err := regexp.Compile("\\d([\\.\\d]*\\d)*")
+
+	if err != nil {
+		fmt.Println("error: ", err)
+	} else {
+		for _, s := range strings {
+			fmt.Printf("In string %s found pattern %s\n", s, regex2.FindString(s))
+		}
+	}
+
 	fmt.Printf("\n~regexdemo.demoExtractAnyCharactersBetweenAndIncludingTwoNumbers()\n")
+}
+
+func findStringIndexDemo() {
+	strs := []string{
+		"aa-bbb.cccc-1.0.157-ddddd-1.ext",
+	}
+	regex := regexp.MustCompile("\\d(.*\\d)*")
+
+	for _, s := range strs {
+		loc := regex.FindStringIndex(s)
+		if loc == nil {
+			fmt.Printf("Failed to extract version number from string %s\n", s)
+		} else {
+			fmt.Printf("Input string: %s. Matched string: %s\n", s, s[loc[0]:loc[1]])
+		}
+	}
+
+	// expected was 1.0.157 but we got 1.0.157-ddddd-1
+	// we need to limit allowed characters to . and digits:
+	regex2 := regexp.MustCompile("\\d([\\.\\d]*\\d)*")
+	for _, s := range strs {
+		loc := regex2.FindStringIndex(s)
+		if loc == nil {
+			fmt.Printf("Failed to extract version number from string %s\n", s)
+		} else {
+			fmt.Printf("Input string: %s. Matched string: %s\n", s, s[loc[0]:loc[1]])
+		}
+	}
 }
 
 // ShowDemo func
@@ -92,5 +131,6 @@ func ShowDemo() {
 	demoFindingAllStringsThatMatchRegex()
 	demoTestThatStringMatchesRegex()
 	demoExtractAnyCharactersBetweenAndIncludingTwoNumbers()
+	findStringIndexDemo()
 	fmt.Printf("\n\n~regexdemo.ShowDemo()\n\n")
 }
