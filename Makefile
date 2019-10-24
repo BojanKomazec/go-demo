@@ -59,4 +59,4 @@ deps-test:
 build-linux:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_PATH) -v $(MAIN_PATH)
 build-docker:
-	docker run --rm --name go-demo_build -it -v "$(PWD)":/go/src/github.com/BojanKomazec/go-demo -w /go/src/github.com/BojanKomazec/go-demo golang:latest /bin/bash -c "cd cmd; go get; cd ../; CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o '$(BINARY_PATH)' -v '$(MAIN_PATH)'"
+	docker run --rm --name go-demo_build -it -v "$(PWD)":/go-demo -w /go-demo golang:latest /bin/bash -c "cd cmd; go get; cd ../; CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o '$(BINARY_PATH)' -v '$(MAIN_PATH)'"
