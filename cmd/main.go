@@ -37,6 +37,8 @@ var runPostgresDemo bool
 
 // https://stackoverflow.com/questions/24790175/when-is-the-init-function-run
 // init() is guaranteed to run before main() is called.
+// https://stackoverflow.com/questions/19761963/flag-command-line-parsing-in-golang
+// https://grokbase.com/t/gg/golang-nuts/134rcnkas9/go-nuts-why-not-flag-parse-in-init
 func init() {
 	flag.BoolVar(&printHelp, "help", false, "print this help")
 	flag.BoolVar(&runPostgresDemo, "postgres", false, "[true|false] - run Postgres Client demo (requires PostgresDB running prior to this application)")

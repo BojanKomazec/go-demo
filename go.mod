@@ -1,0 +1,21 @@
+module github.com/BojanKomazec/go-demo
+
+go 1.12
+
+require (
+	github.com/google/uuid v1.1.1
+	github.com/jmoiron/sqlx v1.2.0
+	github.com/joho/godotenv v1.3.0
+	github.com/k0kubun/colorstring v0.0.0-20150214042306-9440f1994b88 // indirect
+	github.com/lib/pq v1.2.0
+	github.com/mattn/go-colorable v0.1.4 // indirect
+	github.com/nsf/jsondiff v0.0.0-20190712045011-8443391ee9b6
+	github.com/onsi/ginkgo v1.10.2
+	github.com/onsi/gomega v1.7.0
+	github.com/sergi/go-diff v1.0.0 // indirect
+	github.com/stretchr/testify v1.4.0 // indirect
+	github.com/yudai/gojsondiff v1.0.0
+	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
+	github.com/yudai/pp v2.0.1+incompatible // indirect
+	google.golang.org/appengine v1.6.5 // indirect
+)
