@@ -3,6 +3,8 @@ module github.com/BojanKomazec/go-demo
 go 1.12
 
 require (
+	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751 // indirect
+	github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d // indirect
 	github.com/google/uuid v1.1.1
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/joho/godotenv v1.3.0
@@ -13,9 +15,9 @@ require (
 	github.com/onsi/ginkgo v1.10.2
 	github.com/onsi/gomega v1.7.0
 	github.com/sergi/go-diff v1.0.0 // indirect
-	github.com/stretchr/testify v1.4.0 // indirect
 	github.com/yudai/gojsondiff v1.0.0
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	github.com/yudai/pp v2.0.1+incompatible // indirect
 	google.golang.org/appengine v1.6.5 // indirect
+	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 )

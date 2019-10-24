@@ -50,6 +50,7 @@ deps:
 	$(GOGET) -u github.com/nsf/jsondiff
 	$(GOGET) -u github.com/yudai/gojsondiff
 	$(GOGET) -u github.com/yazgazan/jaydiff
+	$(GOGET) -u gopkg.in/alecthomas/kingpin.v2
 deps-test:
 	$(GOGET) -u github.com/google/uuid
 	$(GOGET) -u github.com/onsi/ginkgo

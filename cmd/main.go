@@ -14,6 +14,7 @@ import (
 	"github.com/BojanKomazec/go-demo/internal/pkg/httpdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/iodemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/jsondemo"
+	"github.com/BojanKomazec/go-demo/internal/pkg/kingpindemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/mapdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/onerr"
 	"github.com/BojanKomazec/go-demo/internal/pkg/osdemo"
@@ -32,8 +33,12 @@ import (
 	// "github.com/BojanKomazec/go-demo/internal/pkg/goroutinedemo"
 )
 
-var printHelp bool
-var runPostgresDemo bool
+var (
+	printHelp       bool
+	runPostgresDemo bool
+	verboseMode     bool
+	name            string
+)
 
 // https://stackoverflow.com/questions/24790175/when-is-the-init-function-run
 // init() is guaranteed to run before main() is called.
@@ -42,6 +47,12 @@ var runPostgresDemo bool
 func init() {
 	flag.BoolVar(&printHelp, "help", false, "print this help")
 	flag.BoolVar(&runPostgresDemo, "postgres", false, "[true|false] - run Postgres Client demo (requires PostgresDB running prior to this application)")
+
+	// the following flags are added to match those defined in kingpindemo package
+	flag.StringVar(&name, "name", "", "Name of user.")
+	flag.BoolVar(&verboseMode, "verbose", false, "Verbose mode")
+	flag.BoolVar(&verboseMode, "v", false, "Verbose mode")
+
 	flag.Parse()
 
 	if printHelp {
@@ -86,6 +97,7 @@ func main() {
 		httpdemo.ShowDemo(conf.OutputDir)
 		iodemo.ShowDemo()
 		jsondemo.ShowDemo()
+		kingpindemo.ShowDemo()
 		mapdemo.ShowDemo()
 		osdemo.ShowDemo()
 		pathdemo.ShowDemo()
