@@ -16,6 +16,7 @@ var (
 )
 
 // ShowDemo func
+// $ go run cmd/main.go name=Bojan
 // $ go run cmd/main.go -v Bojan
 // $ go run cmd/main.go --verbose Bojan
 // $ go run cmd/main.go --verbose name=Bojan

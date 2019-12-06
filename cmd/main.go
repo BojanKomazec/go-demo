@@ -24,8 +24,10 @@ import (
 	"github.com/BojanKomazec/go-demo/internal/pkg/regexdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/runtimedemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/sqlxdemo"
+	"github.com/BojanKomazec/go-demo/internal/pkg/statementsdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/stringdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/structdemo"
+	"github.com/BojanKomazec/go-demo/internal/pkg/templatedemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/types"
 	"github.com/joho/godotenv"
 	// "github.com/BojanKomazec/go-demo/internal/pkg/bufiodemo"
@@ -104,8 +106,10 @@ func main() {
 		randdemo.ShowDemo()
 		regexdemo.ShowDemo()
 		runtimedemo.ShowDemo()
+		statementsdemo.ShowDemo()
 		stringdemo.ShowDemo()
 		structdemo.ShowDemo()
+		templatedemo.ShowDemo()
 		types.EnumDemo()
 		types.IotaDemo()
 	}

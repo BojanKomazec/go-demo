@@ -2,6 +2,7 @@ package testingdemo
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"testing"
@@ -29,6 +30,7 @@ func TestMain(m *testing.M) {
 
 func TestA(t *testing.T) {
 	log.Println("TestA running")
+	fmt.Println("TestA")
 }
 
 func TestB(t *testing.T) {
