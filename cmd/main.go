@@ -11,6 +11,7 @@ import (
 	"github.com/BojanKomazec/go-demo/internal/pkg/datatypesdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/errordemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/function"
+	"github.com/BojanKomazec/go-demo/internal/pkg/htmltemplatedemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/httpdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/iodemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/jsondemo"
@@ -27,7 +28,7 @@ import (
 	"github.com/BojanKomazec/go-demo/internal/pkg/statementsdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/stringdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/structdemo"
-	"github.com/BojanKomazec/go-demo/internal/pkg/templatedemo"
+	"github.com/BojanKomazec/go-demo/internal/pkg/texttemplatedemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/types"
 	"github.com/joho/godotenv"
 	// "github.com/BojanKomazec/go-demo/internal/pkg/bufiodemo"
@@ -96,6 +97,7 @@ func main() {
 		// goroutinedemo.ShowDemo()
 		errordemo.ShowDemo()
 		function.ShowDemo()
+		htmltemplatedemo.ShowDemo()
 		httpdemo.ShowDemo(conf.OutputDir)
 		iodemo.ShowDemo()
 		jsondemo.ShowDemo()
@@ -109,7 +111,7 @@ func main() {
 		statementsdemo.ShowDemo()
 		stringdemo.ShowDemo()
 		structdemo.ShowDemo()
-		templatedemo.ShowDemo()
+		texttemplatedemo.ShowDemo()
 		types.EnumDemo()
 		types.IotaDemo()
 	}

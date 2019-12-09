@@ -1,4 +1,4 @@
-package templatedemo
+package htmltemplatedemo
 
 import (
 	"bytes"
@@ -6,7 +6,6 @@ import (
 	"go/format"
 	"html/template"
 	"os"
-	// "text/template"
 )
 
 type person struct {
@@ -139,13 +138,55 @@ func showUsingVariablesInTemplate() {
 	fmt.Println()
 }
 
+const st4 = `abcd{{printf "efgh\n"}}`
+
+func demoPrintfInTemplate() {
+	t := template.Must(template.New("").Parse(st4))
+	t.Execute(os.Stdout, struct{}{})
+	fmt.Println()
+}
+
+const st5 = `{{- range $value := .}}
+{{- $value}}
+{{end -}}`
+
+const st6 = `{{- range $value := . -}}
+<p>{{$value}}</p>
+{{end -}}`
+
+const st7 = `<div>
+	{{range $value := . -}}
+    <p>{{$value}}</p>
+	{{end}}
+</div>
+`
+const st8 = `<div>
+	{{- range $value := .}}
+	{{$value}}
+	{{- end}}
+</div>
+`
+
+func demoRangeArray(stringTemplate string) {
+	fmt.Println("htmltemplatedemo.demoRangeArray()")
+	t := template.Must(template.New("").Parse(stringTemplate))
+	t.Execute(os.Stdout, []string{"first", "second", "third"})
+	fmt.Println("~htmltemplatedemo.demoRangeArray()")
+	fmt.Println()
+}
+
 // ShowDemo func
 func ShowDemo() {
-	fmt.Printf("\n\ntemplatedemo.ShowDemo()\n\n")
+	fmt.Printf("\n\nhtmltemplatedemo.ShowDemo()\n\n")
 	readTemplateFromStringWriteToStdout()
 	readTemplateFromFileWriteToStdout()
 	readTemplateFromFileExecuteInBufferWriteToStdout()
 	showSpaceTrimming()
 	showUsingVariablesInTemplate()
-	fmt.Printf("\n\n~templatedemo.ShowDemo()\n\n")
+	demoPrintfInTemplate()
+	demoRangeArray(st5)
+	demoRangeArray(st6)
+	demoRangeArray(st7)
+	demoRangeArray(st8)
+	fmt.Printf("\n\n~htmltemplatedemo.ShowDemo()\n\n")
 }
