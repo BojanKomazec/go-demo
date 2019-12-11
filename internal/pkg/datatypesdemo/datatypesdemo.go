@@ -108,10 +108,27 @@ func copyList2(in []string) []string {
 	return out
 }
 
+// how to create an empty list
+func nilSliceDemo() {
+	// nil slice; both length and capacity are 0.
+	var list []int
+	fmt.Printf("list= %v, len= %d, cap=%d\n", list, len(list), cap(list))
+
+	list = append(list, 1)
+	fmt.Printf("list= %v, len= %d, cap=%d\n", list, len(list), cap(list))
+	list = append(list, 2)
+	fmt.Printf("list= %v, len= %d, cap=%d\n", list, len(list), cap(list))
+	list = append(list, 3)
+	fmt.Printf("list= %v, len= %d, cap=%d\n", list, len(list), cap(list))
+	list = append(list, 4)
+	fmt.Printf("list= %v, len= %d, cap=%d\n", list, len(list), cap(list))
+}
+
 // ShowDemo func
 func ShowDemo() {
 	fmt.Printf("\n\ndatatypesdemo.ShowDemo()\n\n")
 	demoTypeAssertion()
 	sliceDemo()
+	nilSliceDemo()
 	fmt.Printf("\n\n~datatypesdemo.ShowDemo()\n\n")
 }

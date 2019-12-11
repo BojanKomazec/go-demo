@@ -1,6 +1,7 @@
 package pgclientdemo
 
 import (
+	"database/sql"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -264,6 +265,15 @@ func writeAndReadDemo(conf *config.Config) error {
 	// extract data from each row
 
 	return nil
+}
+
+// denullify function converts sql.NullString into string.
+// It returns valid inner string from sql.NullString or an empty string
+func denullify(s sql.NullString) string {
+	if s.Valid {
+		return s.String
+	}
+	return ""
 }
 
 // ShowDemo func
