@@ -13,6 +13,7 @@ import (
 	"github.com/BojanKomazec/go-demo/internal/pkg/function"
 	"github.com/BojanKomazec/go-demo/internal/pkg/htmltemplatedemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/httpdemo"
+	"github.com/BojanKomazec/go-demo/internal/pkg/httpserverdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/iodemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/jsondemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/kingpindemo"
@@ -41,6 +42,7 @@ var (
 	runPostgresDemo bool
 	verboseMode     bool
 	name            string
+	httpServerDir   string
 )
 
 // https://stackoverflow.com/questions/24790175/when-is-the-init-function-run
@@ -53,6 +55,7 @@ func init() {
 
 	// the following flags are added to match those defined in kingpindemo package
 	flag.StringVar(&name, "name", "", "Name of user.")
+	flag.StringVar(&httpServerDir, "http-server-dir", ".", "Directory to serve files from by HTTP Server")
 	flag.BoolVar(&verboseMode, "verbose", false, "Verbose mode")
 	flag.BoolVar(&verboseMode, "v", false, "Verbose mode")
 
@@ -64,6 +67,7 @@ func init() {
 	}
 
 	fmt.Println("runPostgresDemo =", runPostgresDemo)
+	fmt.Println("httpServerDir =", httpServerDir)
 
 	err := godotenv.Load()
 	if err != nil { // not critical
@@ -90,29 +94,34 @@ func main() {
 			fmt.Println(err)
 		}
 	} else {
-		// fmtdemo.ReadIntegersFromLine()
-		// bufiodemo.ReadIntegersLineDemo()
-		cryptodemo.ShowDemo()
-		datatypesdemo.ShowDemo()
-		// goroutinedemo.ShowDemo()
-		errordemo.ShowDemo()
-		function.ShowDemo()
-		htmltemplatedemo.ShowDemo()
-		httpdemo.ShowDemo(conf.OutputDir)
-		iodemo.ShowDemo()
-		jsondemo.ShowDemo()
-		kingpindemo.ShowDemo()
-		mapdemo.ShowDemo()
-		osdemo.ShowDemo()
-		pathdemo.ShowDemo()
-		randdemo.ShowDemo()
-		regexdemo.ShowDemo()
-		runtimedemo.ShowDemo()
-		statementsdemo.ShowDemo()
-		stringdemo.ShowDemo()
-		structdemo.ShowDemo()
-		texttemplatedemo.ShowDemo()
-		types.EnumDemo()
-		types.IotaDemo()
+		if true {
+			// place here only those demos you want to run
+			httpserverdemo.ShowDemo(httpServerDir)
+		} else {
+			// fmtdemo.ReadIntegersFromLine()
+			// bufiodemo.ReadIntegersLineDemo()
+			cryptodemo.ShowDemo()
+			datatypesdemo.ShowDemo()
+			// goroutinedemo.ShowDemo()
+			errordemo.ShowDemo()
+			function.ShowDemo()
+			htmltemplatedemo.ShowDemo()
+			httpdemo.ShowDemo(conf.OutputDir)
+			iodemo.ShowDemo()
+			jsondemo.ShowDemo()
+			kingpindemo.ShowDemo()
+			mapdemo.ShowDemo()
+			osdemo.ShowDemo()
+			pathdemo.ShowDemo()
+			randdemo.ShowDemo()
+			regexdemo.ShowDemo()
+			runtimedemo.ShowDemo()
+			statementsdemo.ShowDemo()
+			stringdemo.ShowDemo()
+			structdemo.ShowDemo()
+			texttemplatedemo.ShowDemo()
+			types.EnumDemo()
+			types.IotaDemo()
+		}
 	}
 }

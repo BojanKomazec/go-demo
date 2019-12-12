@@ -39,6 +39,7 @@ To build an app and run it with command line args:
 $ make build-linux && ./bin/go-demo -help
 $ make build-linux && ./bin/go-demo -postgres
 $ make build-linux && ./bin/go-demo -postgres=false
+$ make build-linux && ./bin/go-demo -http-server-dir=/home/user/http_server_root_dir
 ```
 
 
