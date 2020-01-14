@@ -54,12 +54,20 @@ type address struct {
 	number int
 }
 
-// type register {
-// 	value11 bool
-// 	value12 int
-// 	value13 string
-// 	value14 []
-// }
+type myMixedTypesStruct struct {
+	fieldBool   bool
+	fieldInt    int
+	fieldString string
+	fieldArray  []int
+}
+
+// To serialize myMixedTypesStruct struct not into an object but an array, we need to define an array data structure.
+// We are using empty interface as all types in the array are different.
+type mixedTypesArray [4]interface{}
+
+type rootStruct struct {
+	MixedTypesArray mixedTypesArray
+}
 
 type myStruct1 struct {
 	field1 int
@@ -224,6 +232,39 @@ func gojsondiffDemo() {
 func jaydiffDemo() {
 }
 
+// https://stackoverflow.com/questions/28015753/serialize-a-mixed-type-json-array-in-go
+func serializeArrayOfMixedTypes() {
+	fmt.Printf("\njsondemo.serializeArrayOfMixedTypes()\n")
+	mts := myMixedTypesStruct{
+		true,
+		123,
+		"text",
+		[]int{
+			1000,
+			1001,
+			1002,
+		},
+	}
+
+	dataToSerialize := rootStruct{
+		mixedTypesArray{
+			mts.fieldBool,
+			mts.fieldInt,
+			mts.fieldString,
+			mts.fieldArray,
+		},
+	}
+
+	b, err := json.Marshal(dataToSerialize)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(string(b))
+
+	fmt.Printf("\n~jsondemo.serializeArrayOfMixedTypes()\n")
+}
+
 // ShowDemo func
 func ShowDemo() {
 	fmt.Printf("\n\njsondemo.ShowDemo()\n\n")
@@ -234,5 +275,6 @@ func ShowDemo() {
 	jsonDiffDemo()
 	gojsondiffDemo()
 	jaydiffDemo()
+	serializeArrayOfMixedTypes()
 	fmt.Printf("\n\n~jsondemo.ShowDemo()\n")
 }

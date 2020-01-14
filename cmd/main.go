@@ -96,11 +96,12 @@ func main() {
 	} else {
 		if true {
 			// place here only those demos you want to run
-			datatypesdemo.ShowDemo()
+			jsondemo.ShowDemo()
 		} else {
 			// fmtdemo.ReadIntegersFromLine()
 			// bufiodemo.ReadIntegersLineDemo()
 			cryptodemo.ShowDemo()
+			datatypesdemo.ShowDemo()
 			// goroutinedemo.ShowDemo()
 			errordemo.ShowDemo()
 			function.ShowDemo()
