@@ -96,17 +96,17 @@ func main() {
 	} else {
 		if true {
 			// place here only those demos you want to run
-			httpserverdemo.ShowDemo(httpServerDir)
+			datatypesdemo.ShowDemo()
 		} else {
 			// fmtdemo.ReadIntegersFromLine()
 			// bufiodemo.ReadIntegersLineDemo()
 			cryptodemo.ShowDemo()
-			datatypesdemo.ShowDemo()
 			// goroutinedemo.ShowDemo()
 			errordemo.ShowDemo()
 			function.ShowDemo()
 			htmltemplatedemo.ShowDemo()
 			httpdemo.ShowDemo(conf.OutputDir)
+			httpserverdemo.ShowDemo(httpServerDir)
 			iodemo.ShowDemo()
 			jsondemo.ShowDemo()
 			kingpindemo.ShowDemo()

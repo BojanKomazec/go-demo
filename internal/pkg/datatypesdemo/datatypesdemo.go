@@ -124,11 +124,26 @@ func nilSliceDemo() {
 	fmt.Printf("list= %v, len= %d, cap=%d\n", list, len(list), cap(list))
 }
 
+func emptyInterfaceDemo() {
+
+	sliceEmptyInterace := []interface{}{"one", "two", "three"}
+	fmt.Println("sliceEmptyInterace =", sliceEmptyInterace)
+
+	// Create string slice from empty interface slice
+	sliceString := make([]string, len(sliceEmptyInterace))
+	for i := range sliceEmptyInterace {
+		sliceString[i] = sliceEmptyInterace[i].(string)
+	}
+
+	fmt.Println("sliceString =", sliceString)
+}
+
 // ShowDemo func
 func ShowDemo() {
 	fmt.Printf("\n\ndatatypesdemo.ShowDemo()\n\n")
 	demoTypeAssertion()
-	sliceDemo()
+	emptyInterfaceDemo()
 	nilSliceDemo()
+	sliceDemo()
 	fmt.Printf("\n\n~datatypesdemo.ShowDemo()\n\n")
 }
