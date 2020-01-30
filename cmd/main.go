@@ -96,7 +96,7 @@ func main() {
 	} else {
 		if true {
 			// place here only those demos you want to run
-			jsondemo.ShowDemo()
+			stringdemo.ShowDemo()
 		} else {
 			// fmtdemo.ReadIntegersFromLine()
 			// bufiodemo.ReadIntegersLineDemo()

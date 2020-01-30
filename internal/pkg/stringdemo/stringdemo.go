@@ -218,6 +218,9 @@ func extractSubstringDemo() {
 	substrIndex := []int{2, 5}
 	substr := s[substrIndex[0]:substrIndex[1]]
 	fmt.Printf("Substring of %s at slice indexes [%d, %d] is %s\n", s, substrIndex[0], substrIndex[1], substr)
+
+	// extract last character of string
+	fmt.Printf("Last character of %s is %s\n", s, s[len(s)-1:])
 }
 
 func trimLaeadingAndTrailingCharactersFromSet() {
@@ -227,12 +230,20 @@ func trimLaeadingAndTrailingCharactersFromSet() {
 	fmt.Printf("Input string: %s. Cutset: %s. Output string: %s\n", s, cutset, out)
 }
 
+func findSubstringDemo() {
+	s := "abcde/fgh\\i"
+	c1 := "/"
+
+	fmt.Printf("String %s contains %s: %t\n", s, c1, strings.Contains(s, c1))
+}
+
 // ShowDemo func
 func ShowDemo() {
 	log.Printf("\n\nstringdemo.ShowDemo()\n\n")
 	breakingLongStringsDemo()
 	extractSubstringDemo()
 	findIndexOfSubstringDemo()
+	findSubstringDemo()
 	joiningStringsDemo()
 	replaceDemo()
 	runeDemo()
