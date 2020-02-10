@@ -3,6 +3,7 @@ package stringdemo
 import (
 	"fmt"
 	"log"
+	"regexp"
 	"strings"
 )
 
@@ -237,6 +238,28 @@ func findSubstringDemo() {
 	fmt.Printf("String %s contains %s: %t\n", s, c1, strings.Contains(s, c1))
 }
 
+func removeNonAlphanumericDemo() {
+
+	// string containing Unicode Decimal Code and non-alphanumeric characters
+	s := "Bojan&#8217;s test string - (1234)?"
+	fmt.Println("s = ", s)
+
+	for i, r := range s {
+		fmt.Printf("rune index = %d, rune = %v\n", i, r)
+	}
+
+	// First remove all Unicode characters.
+	// HTML/XML format for Unicode code points: &#nnnn; (n is decimal number - from 0 to 9)
+	reg := regexp.MustCompile("&#\\d{4};")
+	s = reg.ReplaceAllString(s, "")
+	fmt.Println(s)
+
+	// Now remove all non-alphanumeric.
+	reg = regexp.MustCompile("[^a-zA-Z0-9\\s]+")
+	s = reg.ReplaceAllString(s, "")
+	fmt.Println(s)
+}
+
 // ShowDemo func
 func ShowDemo() {
 	log.Printf("\n\nstringdemo.ShowDemo()\n\n")
@@ -246,6 +269,7 @@ func ShowDemo() {
 	findSubstringDemo()
 	joiningStringsDemo()
 	replaceDemo()
+	removeNonAlphanumericDemo()
 	runeDemo()
 	stringComparisonDemo()
 	trimDemo()

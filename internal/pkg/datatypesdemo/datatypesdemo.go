@@ -30,8 +30,63 @@ func demoArrayDeclaration() {
 	fmt.Println("len(arr2) =", len(arr2))
 }
 
+// Function argument cannot be of type [...]T (array of any size).
+// It has to have size specified: [N]T
+func arrayOf3StringsContains(arr [3]string, s string) bool {
+	for _, e := range arr {
+		if e == s {
+			return true
+		}
+	}
+
+	return false
+}
+
+// We can use function which has slice as an argument.
+func stringSliceContains(slice []string, s string) bool {
+	for _, e := range slice {
+		if e == s {
+			return true
+		}
+	}
+
+	return false
+}
+
+func searchElementInArrayDemo() {
+	fmt.Println("searchElementInArrayDemo()")
+
+	s := "four"
+	fmt.Println("s =", s)
+
+	// type of arr is [3]string
+	arr := [...]string{"one", "two", "three"}
+	fmt.Println("arr = ", arr)
+
+	found := arrayOf3StringsContains(arr, s)
+
+	if found {
+		fmt.Println("String found in array")
+	} else {
+		fmt.Println("String was not found in array")
+	}
+
+	arr2 := [...]string{"one", "two", "three", "four"}
+	fmt.Println("arr2 = ", arr2)
+
+	// To pass an array of any size we need to convert it to a slice.
+	found = stringSliceContains(arr2[:], s)
+
+	if found {
+		fmt.Println("String found in array")
+	} else {
+		fmt.Println("String was not found in array")
+	}
+}
+
 func arrayDemo() {
 	demoArrayDeclaration()
+	searchElementInArrayDemo()
 }
 
 // makeRange creates an increasing sequence of integers
@@ -141,6 +196,7 @@ func emptyInterfaceDemo() {
 // ShowDemo func
 func ShowDemo() {
 	fmt.Printf("\n\ndatatypesdemo.ShowDemo()\n\n")
+	arrayDemo()
 	demoTypeAssertion()
 	emptyInterfaceDemo()
 	nilSliceDemo()

@@ -5,6 +5,35 @@ import (
 	"regexp"
 )
 
+// RegEx matching rules
+//
+// . = any character
+//    a.b = matches sequences (strings or substrings) aab, a?b, a4b,...
+// ^ (karet) = beginning of the string
+// $ = end of the string
+//    ^a.b$ matches whole strings like aab, a?b, a4b,...
+
+// [ab]	    = the character a or b
+// [^ab]	= any character except a or b
+// [a-z]	= any character from a to z
+// [^a-z]	= any character except from a to z
+// [a-z0-9]	= any character from a to z or 0 to 9
+// [a-z0-9]	= any character except any character from a to z or 0 to 9
+//
+// \d =	a digit: [0-9]
+// \D = a non-digit: [^0-9]
+//
+// \s   = a whitespace character: [\t\n\f\r ]
+// \S   = a non-whitespace character: [^\t\n\f\r ]
+//
+// x*	= zero or more x, prefer more
+// x*?	= prefer fewer (non-greedy)
+// x+	= one or more x, prefer more
+// x+?	= prefer fewer (non-greedy)
+// x?	= zero or one x, prefer one
+// x??	= prefer zero
+// x{n}	= exactly n x
+
 func demoFindingAllStringsThatMatchRegex() {
 	fmt.Printf("\nregexdemo.demoFindingAllStringsThatMatchRegex()\n")
 	s1 := "\"{\"id\":1, \"name\":\"one\", \"address\": {\"number\": \"7\", \"street\":\"Moor Street\"}}\",\"{\"id\":2, \"name\":\"two\", \"address\": {\"number\": \"223\", \"street\":\"Hills Road\"}\"}"

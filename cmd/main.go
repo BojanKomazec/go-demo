@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/BojanKomazec/go-demo/internal/pkg/archivedemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/config"
 	"github.com/BojanKomazec/go-demo/internal/pkg/cryptodemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/datatypesdemo"
@@ -96,8 +97,9 @@ func main() {
 	} else {
 		if true {
 			// place here only those demos you want to run
-			stringdemo.ShowDemo()
+			datatypesdemo.ShowDemo()
 		} else {
+			archivedemo.ShowDemo()
 			// fmtdemo.ReadIntegersFromLine()
 			// bufiodemo.ReadIntegersLineDemo()
 			cryptodemo.ShowDemo()
