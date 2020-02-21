@@ -10,6 +10,7 @@ import (
 	"github.com/BojanKomazec/go-demo/internal/pkg/config"
 	"github.com/BojanKomazec/go-demo/internal/pkg/cryptodemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/datatypesdemo"
+	"github.com/BojanKomazec/go-demo/internal/pkg/elliotchancephpserializedemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/errordemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/function"
 	"github.com/BojanKomazec/go-demo/internal/pkg/htmltemplatedemo"
@@ -31,6 +32,7 @@ import (
 	"github.com/BojanKomazec/go-demo/internal/pkg/stringdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/structdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/texttemplatedemo"
+	"github.com/BojanKomazec/go-demo/internal/pkg/timedemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/types"
 	"github.com/joho/godotenv"
 	// "github.com/BojanKomazec/go-demo/internal/pkg/bufiodemo"
@@ -97,7 +99,7 @@ func main() {
 	} else {
 		if true {
 			// place here only those demos you want to run
-			datatypesdemo.ShowDemo()
+			timedemo.ShowDemo()
 		} else {
 			archivedemo.ShowDemo()
 			// fmtdemo.ReadIntegersFromLine()
@@ -105,6 +107,7 @@ func main() {
 			cryptodemo.ShowDemo()
 			datatypesdemo.ShowDemo()
 			// goroutinedemo.ShowDemo()
+			elliotchancephpserializedemo.ShowDemo()
 			errordemo.ShowDemo()
 			function.ShowDemo()
 			htmltemplatedemo.ShowDemo()

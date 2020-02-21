@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"log"
 	"regexp"
+	"strconv"
 	"strings"
+	"time"
 )
 
 // Transformer returns modified input string
@@ -260,6 +262,27 @@ func removeNonAlphanumericDemo() {
 	fmt.Println(s)
 }
 
+func typeConversionsDemo() {
+
+	n1 := 123456
+	// int to string
+	s1 := strconv.Itoa(n1)
+
+	// golang does not have 'assert' funtion like C++
+	// This can be used to emulate it:
+	if s1 != "123456" {
+		panic(fmt.Sprintf("assertion failed (%s)", s1))
+	}
+
+	t := time.Now().Unix()
+
+	// cannot use t (variable of type int64) as int value in argument to strconv.Itoa
+	// s2 := strconv.Itoa(t);
+
+	s2 := strconv.FormatInt(t, 10)
+	fmt.Println("s2 (converted from int64) =", s2)
+}
+
 // ShowDemo func
 func ShowDemo() {
 	log.Printf("\n\nstringdemo.ShowDemo()\n\n")
@@ -274,6 +297,7 @@ func ShowDemo() {
 	stringComparisonDemo()
 	trimDemo()
 	trimLaeadingAndTrailingCharactersFromSet()
+	typeConversionsDemo()
 	splitDemo()
 	log.Printf("\n\n~stringdemo.ShowDemo()\n\n")
 }

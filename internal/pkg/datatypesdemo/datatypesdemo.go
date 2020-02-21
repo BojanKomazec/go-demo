@@ -18,6 +18,22 @@ func demoTypeAssertion() {
 	// fmt.Println("i =", i)
 }
 
+// This function returns values of different types, depending on some runtime condition.
+func returnsEmptyInterface(returnString bool) interface{} {
+	if returnString {
+		return "test"
+	}
+
+	return 1
+}
+
+func testCallingFunctionWhichReturnsEmptyInterface() {
+	s := returnsEmptyInterface(true)
+	fmt.Println("returnsEmptyInterface() returned string ", s)
+	n := returnsEmptyInterface(false)
+	fmt.Println("returnsEmptyInterface() returned integer ", n)
+}
+
 func demoArrayDeclaration() {
 	arr1 := [3]string{"AA", "BB", "CC"}
 	fmt.Println("arr1 =", arr1)
@@ -104,6 +120,31 @@ func makeRange(min, max int) []int {
 }
 
 func sliceDemo() {
+	// declared but not initialized slice has value nil
+	var slice0 []string
+	if slice0 == nil {
+		fmt.Println("slice0 is nil: ", slice0) // value printed: []
+	}
+
+	var slice1 []string
+	slice1 = []string{""}
+	fmt.Println("slice1 =", slice1)           // value printed: []
+	fmt.Println("len(slice1) =", len(slice1)) // 1
+
+	var slice2 []string
+	// if we don't call make here or assigne []string{} before, no memory will be allocated to slice and indexing oparation will fail:
+	// panic: runtime error: index out of range
+	// slice2[0] = ""
+
+	// we need to allocate memory before assignments per element:
+	slice2 = make([]string, 1)
+	slice2[0] = ""
+	fmt.Println("slice2 =", slice2)           // value printed: []
+	fmt.Println("len(slice2) =", len(slice2)) // 1
+	if slice2[0] == "" {
+		fmt.Println("slice2[0] is empty string:", slice2[0])
+	}
+
 	// slice declaration
 	// (!) don't mix []T{...} (slice declaration) with [...]T{...} (array declaration)
 	sliceOfStrings := []string{"AA", "BB", "CC"}
@@ -201,5 +242,6 @@ func ShowDemo() {
 	emptyInterfaceDemo()
 	nilSliceDemo()
 	sliceDemo()
+	testCallingFunctionWhichReturnsEmptyInterface()
 	fmt.Printf("\n\n~datatypesdemo.ShowDemo()\n\n")
 }

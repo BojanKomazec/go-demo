@@ -4,6 +4,7 @@ package archivedemo
 
 import (
 	"archive/zip"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -12,20 +13,37 @@ import (
 
 // source - path to directory to be compressed
 // destination - path to output zip file
-func compressToZip(source, destination string) error {
+func compressToZip(source, destination string, includeRootDir bool) error {
+	fmt.Printf("compressToZip(). source = %s, destination = %s\n", source, destination)
+
 	destinationFile, err := os.Create(destination)
 	if err != nil {
 		return err
 	}
+
 	myZip := zip.NewWriter(destinationFile)
+
 	err = filepath.Walk(source, func(filePath string, info os.FileInfo, err error) error {
+		fmt.Println("filePath = ", filePath)
+
 		if info.IsDir() {
 			return nil
 		}
+
 		if err != nil {
 			return err
 		}
-		relPath := strings.TrimPrefix(filePath, filepath.Dir(source))
+
+		var prefix string
+		if includeRootDir {
+			prefix = filepath.Dir(source)
+		} else {
+			prefix = strings.TrimPrefix(source, "./")
+		}
+
+		relPath := strings.TrimPrefix(filePath, prefix)
+		fmt.Println("relPath = ", relPath)
+
 		zipFile, err := myZip.Create(relPath)
 		if err != nil {
 			return err
@@ -52,5 +70,6 @@ func compressToZip(source, destination string) error {
 
 // ShowDemo func
 func ShowDemo() {
-	compressToZip("./data-vol/demo/archive_demo/dir_to_archive", "./data-vol/demo/archive_demo/archive.zip")
+	compressToZip("./data-vol/demo/archive_demo/dir_to_archive", "./data-vol/demo/archive_demo/archive1.zip", true)
+	compressToZip("./data-vol/demo/archive_demo/dir_to_archive", "./data-vol/demo/archive_demo/archive2.zip", false)
 }
