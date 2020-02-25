@@ -16,8 +16,12 @@ func unixTimeDemo() {
 		fmt.Println(err)
 	} else {
 		tn2 = t2.Unix()
-		fmt.Printf("Date %s in unix time = %d", strTime, tn2)
+		fmt.Printf("Date %s in unix time = %d\n", strTime, tn2)
 	}
+
+	t3 := time.Date(2016, time.August, 15, 23, 7, 55, 0, time.UTC)
+	tn3 := t3.Unix()
+	fmt.Printf("Date %s in unix time = %d\n", t3, tn3)
 }
 
 func comparisonDemo() {

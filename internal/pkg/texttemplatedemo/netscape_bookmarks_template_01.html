@@ -15,6 +15,6 @@
         {{- else if eq .ID "3" }}
             Hello bookmark with ID = 3!
         {{- end }}
-        <DT><A ID={{.ID}} HREF={{.Href}}>{{.Title}}</A>
+        <DT><A ADD_DATE={{timeToUnixTimeString .AddDate}} ID={{.ID}} HREF={{.Href}}>{{.Title}}</A>
     {{- end}}
 </DL><p>

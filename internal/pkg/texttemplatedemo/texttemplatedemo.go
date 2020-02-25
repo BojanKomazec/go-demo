@@ -5,7 +5,10 @@ import (
 	"fmt"
 	"go/format"
 	"os"
+	"path/filepath"
+	"strconv"
 	"text/template"
+	"time"
 )
 
 type person struct {
@@ -31,20 +34,22 @@ const st = `<!DOCTYPE html>
 </html>
 `
 
-var c = bookmarkHTMLContent{
+var content1 = bookmarkHTMLContent{
 	ID1:    "1",
 	Href1:  "www.google.com",
 	Title1: "Google",
 	Bookmarks: []bookmark{
 		{
-			ID:    "2",
-			Href:  "www.amazon.com",
-			Title: "Amazon",
+			AddDate: time.Now(),
+			ID:      "2",
+			Href:    "www.amazon.com",
+			Title:   "Amazon",
 		},
 		{
-			ID:    "3",
-			Href:  "www.ebay.com",
-			Title: "eBay",
+			AddDate: time.Now(),
+			ID:      "3",
+			Href:    "www.ebay.com",
+			Title:   "eBay",
 		},
 	},
 }
@@ -59,9 +64,10 @@ func readTemplateFromStringWriteToStdout() {
 }
 
 type bookmark struct {
-	ID    string
-	Href  string
-	Title string
+	AddDate time.Time
+	ID      string
+	Href    string
+	Title   string
 }
 
 type bookmarkHTMLContent struct {
@@ -71,25 +77,48 @@ type bookmarkHTMLContent struct {
 	Bookmarks []bookmark
 }
 
+// This is a conversion function that converts item's value into string so can be used for filling in the HTML template.
+func timeToUnixTimeString(t time.Time) string {
+	return strconv.FormatInt(t.Unix(), 10)
+}
+
+const templateFilePath string = "./internal/pkg/texttemplatedemo/netscape_bookmarks_template_01.html"
+
+// Template has to be created with New() before calling Funcs() on it.
+//
+// Template name passed to New() has to match the name of template file.
+// If that's not the case, we'll get the error like in this example:
+// 		// Error: template: bookmark: "bookmark" is an incomplete or empty template
+// 		template.New("bookmark").ParseFiles("some_file.html")
+//
+// https://stackoverflow.com/questions/24837883/golang-templates-minus-function
+// https://stackoverflow.com/questions/49043292/error-template-is-an-incomplete-or-empty-template
+// https://stackoverflow.com/questions/17843311/template-and-custom-function-panic-function-not-defined
+// Funcs() must be called on template before parsing (calling ParseFiles()).
 func readTemplateFromFileWriteToStdout() {
-	t, e := template.ParseFiles("./internal/pkg/templatedemo/netscape_bookmarks_template_01.html")
+	templateFileName := filepath.Base(templateFilePath)
+	t, e := template.New(templateFileName).Funcs(template.FuncMap{"timeToUnixTimeString": timeToUnixTimeString}).ParseFiles(templateFilePath)
 	if e != nil {
 		fmt.Printf("Error: %s\n", e.Error())
 		return
 	}
 
-	t.Execute(os.Stdout, &c)
+	err := t.Execute(os.Stdout, &content1)
+	if err != nil {
+		fmt.Println("template.Execute() failed with error:", err.Error())
+	}
 }
 
 func readTemplateFromFileExecuteInBufferWriteToStdout() {
-	t, e := template.ParseFiles("./internal/pkg/templatedemo/netscape_bookmarks_template_01.html")
+	templateFileName := filepath.Base(templateFilePath)
+	t, e := template.New(templateFileName).Funcs(template.FuncMap{"timeToUnixTimeString": timeToUnixTimeString}).ParseFiles(templateFilePath)
 	if e != nil {
 		fmt.Printf("Error: %s\n", e.Error())
 		return
 	}
 
 	var buf bytes.Buffer
-	if e := t.Execute(&buf, &c); e != nil {
+	if e := t.Execute(&buf, &content1); e != nil {
 		fmt.Printf("Error: %s\n", e.Error())
 		return
 	}
@@ -161,8 +190,7 @@ const st7 = `<div>
 </div>
 `
 
-const st8 =
- `<div>
+const st8 = `<div>
 	{{- range $value := .}}
 	{{$value}}
 	{{- end}}
