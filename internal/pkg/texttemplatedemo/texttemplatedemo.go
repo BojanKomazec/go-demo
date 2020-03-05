@@ -51,6 +51,12 @@ var content1 = bookmarkHTMLContent{
 			Href:    "www.ebay.com",
 			Title:   "eBay",
 		},
+		{
+			AddDate: time.Now(),
+			ID:      "",
+			Href:    "www.booking.com",
+			Title:   "Booking",
+		},
 	},
 }
 

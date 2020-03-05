@@ -2,6 +2,7 @@ package datatypesdemo
 
 import (
 	"fmt"
+	"log"
 	"strings"
 )
 
@@ -100,9 +101,86 @@ func searchElementInArrayDemo() {
 	}
 }
 
+type person struct {
+	Name string
+}
+
+// This function will not make desired change actually.
+// 'range' creates a (temporary) copy of the current element and all changes are performed on it.
+func modifyPersons(persons []person) []person {
+
+	for _, p := range persons {
+		if p.Name == "Bob" {
+			p.Name = "Bojan"
+		}
+	}
+
+	log.Println("~modifyPersons(): persons =", persons)
+	return persons
+}
+
+func modifyPersons2(persons []person) []person {
+
+	for i := range persons {
+		if persons[i].Name == "Bob" {
+			persons[i].Name = "Bojan"
+		}
+	}
+
+	log.Println("~modifyPersons2(): persons =", persons)
+	return persons
+}
+
+func createSliceCopy(persons []person) []person {
+	copyPersons := make([]person, len(persons))
+
+	for i := range persons {
+		copyPersons[i] = persons[i]
+	}
+
+	return copyPersons
+}
+
+// WARNING:  append will allocate excess memory -- unless this array is later filled to capacity by some further processing
+// https://stackoverflow.com/questions/30182538/why-cant-i-duplicate-a-slice-with-copy
+func createSliceCopy2(persons []person) []person {
+	return append([]person{}, persons...)
+}
+
+func createSliceCopy3(persons []person) []person {
+	personsCopy := make([]person, len(persons))
+	copy(personsCopy, persons)
+	return personsCopy
+}
+
+func demoPassingSliceToFunction() {
+	persons := []person{
+		{
+			"Alice",
+		},
+		{
+			"Bob",
+		},
+	}
+
+	persons = modifyPersons(persons)
+	log.Println("persons (after ineffective modification try) =", persons)
+
+	copyPersons := createSliceCopy(persons)
+	log.Println("copyPersons (should be the same as persons) =", copyPersons)
+	copyPersons = modifyPersons2(copyPersons)
+	log.Println("persons (after modification of copyPersons) =", persons)
+	log.Println("copyPersons =", copyPersons)
+
+	persons = modifyPersons2(persons)
+	log.Println("persons (after real modification) =", persons)
+	log.Println("copyPersons (after real modification of persons) =", copyPersons)
+}
+
 func arrayDemo() {
 	demoArrayDeclaration()
 	searchElementInArrayDemo()
+	demoPassingSliceToFunction()
 }
 
 // makeRange creates an increasing sequence of integers

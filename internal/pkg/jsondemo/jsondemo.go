@@ -265,6 +265,161 @@ func serializeArrayOfMixedTypes() {
 	fmt.Printf("\n~jsondemo.serializeArrayOfMixedTypes()\n")
 }
 
+func serializeMyStruct5() {
+	fmt.Printf("\njsondemo.serializeMyStruct5()\n")
+
+	// we want to represent this in JSON as an array e.g.
+	// "filter" : ""
+	// "filter" : "test"
+	// "filter" : [
+	//		"test1",
+	//      "test2",
+	// ]
+	type filter struct {
+		Component1 string
+		// if array is empty, we want it to be empty string in JSON
+		// if array has a single element, we want it to be a string in JSON (value of that element)
+		// if array has multiple elements, we want it to be an array of strings
+		Component2 []string
+	}
+
+	type myStruct5 struct {
+		ID  string
+		Fil filter
+	}
+
+	s := myStruct5{
+		ID: "1",
+		Fil: filter{
+			"comp1str",
+			[]string{
+				"comp2str1",
+				"comp2str2",
+			},
+		},
+	}
+
+	fmt.Println("Serializing #1:")
+	b, err := json.MarshalIndent(s, "", "\t")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(string(b))
+}
+
+// we want to represent this in JSON as an array e.g.
+// "filter" : [
+//		"test",
+//		""
+// ]
+//
+// "filter" : [
+//		"test",
+//		"test1"
+// ]
+//
+// "filter" : [
+//		"com1str",
+//		[
+//          "com2str1",
+//          "com2str2",
+//      ]
+// ]
+type filter struct {
+	Component1 string
+	// if array is empty, we want it to be empty string in JSON
+	// if array has a single element, we want it to be a string in JSON (value of that element)
+	// if array has multiple elements, we want it to be an array of strings
+	Component2 []string
+}
+
+func (f filter) MarshalJSON() ([]byte, error) {
+	fmt.Println("MarshalJSON()")
+
+	var v interface{}
+	if f.Component2 == nil {
+		v = []string{
+			f.Component1,
+			"",
+		}
+	} else if len(f.Component2) == 1 {
+		v = []string{
+			f.Component1,
+			f.Component2[0],
+		}
+	} else {
+		v = []interface{}{
+			f.Component1,
+			f.Component2,
+		}
+	}
+
+	return json.Marshal(v)
+}
+
+type myStruct5 struct {
+	ID  string
+	Fil filter
+}
+
+func serializeMyStruct6() {
+	fmt.Printf("\njsondemo.serializeMyStruct6()\n")
+
+	s1 := myStruct5{
+		ID: "1",
+		Fil: filter{
+			"comp1str",
+			nil,
+		},
+	}
+
+	fmt.Println("Serializing #1:")
+	b, err := json.MarshalIndent(s1, "", "\t")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(string(b))
+
+	s2 := myStruct5{
+		ID: "1",
+		Fil: filter{
+			"comp1str",
+			[]string{
+				"comp2str",
+			},
+		},
+	}
+
+	fmt.Println("Serializing #2:")
+	b, err = json.MarshalIndent(s2, "", "\t")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(string(b))
+
+	s3 := myStruct5{
+		ID: "1",
+		Fil: filter{
+			"comp1str",
+			[]string{
+				"comp2str1",
+				"comp2str2",
+			},
+		},
+	}
+
+	fmt.Println("Serializing #3:")
+	b, err = json.MarshalIndent(s3, "", "\t")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(string(b))
+}
+
 // ShowDemo func
 func ShowDemo() {
 	fmt.Printf("\n\njsondemo.ShowDemo()\n\n")
@@ -276,5 +431,7 @@ func ShowDemo() {
 	gojsondiffDemo()
 	jaydiffDemo()
 	serializeArrayOfMixedTypes()
+	serializeMyStruct5()
+	serializeMyStruct6()
 	fmt.Printf("\n\n~jsondemo.ShowDemo()\n")
 }

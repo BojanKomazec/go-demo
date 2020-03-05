@@ -88,7 +88,7 @@ func CreateSymlink(filePath, symLinkFilePath string) error {
 	return nil
 }
 
-// IsSymlink func checks if file at the specified path is a symlink.
+// IsSymlink func checks if file (or directory) at the specified path is a symlink.
 // It returns true if it is and false if it is not.
 //
 // Mask for the type bits. For regular files, none will be set.
@@ -143,7 +143,7 @@ func WriteToFile(filePath string, text string) (int, error) {
 	return f.WriteString(text)
 }
 
-// WriteToFileBuffered func
+// WriteToFileAtPathBuffered func
 func WriteToFileAtPathBuffered(filePath string, text string) (int, error) {
 	f, err := os.Create(filePath)
 	if err != nil {
@@ -276,6 +276,31 @@ func demoCreateDirectorySymLink(dirPath string, dirSymLinkPath string) {
 	fmt.Println("~demoCreateDirectorySymLink()")
 }
 
+// returns path to the symlink target (directory)
+// filepath.EvalSymlinks()
+func demoFindDirectorySymlinkTarget(dirPath string) {
+	fmt.Println("Symlink directory: ", dirPath)
+
+	isSymLink, err := IsSymlink(dirPath)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+
+	if !isSymLink {
+		fmt.Println("Directory is not a symlink.")
+		return
+	}
+
+	targetDirPath, err := filepath.EvalSymlinks(dirPath)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+
+	fmt.Println("Target directory: ", targetDirPath)
+}
+
 func createAbsPath(relPath string) (string, error) {
 	wd, err := os.Getwd()
 	if err != nil {
@@ -329,6 +354,8 @@ func ShowDemo() {
 	}
 
 	demoCreateDirectorySymLink(dirPath, dirSymLinkPath)
+	demoFindDirectorySymlinkTarget(dirSymLinkPath)
+	demoFindDirectorySymlinkTarget(dirPath)
 	demoAbs()
 	demoFilePathDir()
 	demoIsExist()

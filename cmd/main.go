@@ -99,7 +99,7 @@ func main() {
 	} else {
 		if true {
 			// place here only those demos you want to run
-			timedemo.ShowDemo()
+			httpdemo.ShowDemo(conf.OutputDir)
 		} else {
 			archivedemo.ShowDemo()
 			// fmtdemo.ReadIntegersFromLine()
@@ -126,6 +126,7 @@ func main() {
 			stringdemo.ShowDemo()
 			structdemo.ShowDemo()
 			texttemplatedemo.ShowDemo()
+			timedemo.ShowDemo()
 			types.EnumDemo()
 			types.IotaDemo()
 		}
