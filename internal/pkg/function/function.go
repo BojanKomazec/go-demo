@@ -52,10 +52,60 @@ func testVarScope() {
 	println("s =", s, "err =", err.Error())
 }
 
+func execute(f func()) {
+	f()
+}
+
+type person struct {
+	Name string
+	Age  int
+}
+
+func printMembers(p person) {
+	fmt.Printf("printMembers(): Person Name = %s, Age = %d\n", p.Name, p.Age)
+}
+
+func captureDemo() {
+	p := person{
+		Name: "Bojan",
+		Age:  41,
+	}
+
+	execute(func() {
+		fmt.Printf("Person Name = %s, Age = %d\n", p.Name, p.Age)
+
+		p.Age = 42
+		execute(func() {
+			fmt.Printf("Person Name = %s, Age = %d\n", p.Name, p.Age)
+
+			p.Age = 43
+			printMembers(p)
+		})
+
+		p.Age = 44
+	})
+}
+
+func internalFunctionDemo() {
+
+	// It is not possible to declare internal function by stating its name:
+	// error: expected expression
+	// func foo(){}
+
+	// ...but it is possible to assign anonymous function to a variable and call it via that variable:
+	foo := func() {
+		fmt.Println("foo()")
+	}
+
+	foo()
+}
+
 // ShowDemo func
 func ShowDemo() {
 	fmt.Printf("\n\nfunction.ShowDemo()\n\n")
-	variadicFunction(1, 'a', true, "bcdef")
-	testVarScope()
+	// variadicFunction(1, 'a', true, "bcdef")
+	// testVarScope()
+	// captureDemo()
+	internalFunctionDemo()
 	fmt.Printf("\n\n~function.ShowDemo()\n\n")
 }

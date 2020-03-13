@@ -99,7 +99,7 @@ func main() {
 	} else {
 		if true {
 			// place here only those demos you want to run
-			httpdemo.ShowDemo(conf.OutputDir)
+			function.ShowDemo()
 		} else {
 			archivedemo.ShowDemo()
 			// fmtdemo.ReadIntegersFromLine()

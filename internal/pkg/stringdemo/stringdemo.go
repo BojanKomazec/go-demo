@@ -240,10 +240,7 @@ func findSubstringDemo() {
 	fmt.Printf("String %s contains %s: %t\n", s, c1, strings.Contains(s, c1))
 }
 
-func removeNonAlphanumericDemo() {
-
-	// string containing Unicode Decimal Code and non-alphanumeric characters
-	s := "Bojan&#8217;s test string - (1234)?"
+func removeNonAlphanumeric(s string) string {
 	fmt.Println("s = ", s)
 
 	for i, r := range s {
@@ -259,7 +256,30 @@ func removeNonAlphanumericDemo() {
 	// Now remove all non-alphanumeric.
 	reg = regexp.MustCompile("[^a-zA-Z0-9\\s]+")
 	s = reg.ReplaceAllString(s, "")
-	fmt.Println(s)
+	return s
+}
+
+// whitespace = space, tab (\t), new line (line feed, LF, \n), carriage return (CR, \r) or form feed (\f)
+func collapseMultipleWhiteSpacesIntoSingle(s string) string {
+	// "+" insures greediness - it will capture multiple instances
+	space := regexp.MustCompile("\\s+")
+	return space.ReplaceAllString(s, " ")
+}
+
+func removeNonAlphanumericDemo() {
+
+	// string containing Unicode Decimal Code and non-alphanumeric characters
+	s1 := "Bojan&#8217;s test string - (1234)?"
+	r1 := removeNonAlphanumeric(s1)
+	fmt.Println("Result:", r1)
+	r1 = collapseMultipleWhiteSpacesIntoSingle(r1)
+	fmt.Println("Result:", r1)
+
+	s2 := "Test &#8211; Test #234"
+	r2 := removeNonAlphanumeric(s2)
+	fmt.Println("Result:", r2)
+	r2 = collapseMultipleWhiteSpacesIntoSingle(r2)
+	fmt.Println("Result:", r2)
 }
 
 func typeConversionsDemo() {
@@ -286,18 +306,18 @@ func typeConversionsDemo() {
 // ShowDemo func
 func ShowDemo() {
 	log.Printf("\n\nstringdemo.ShowDemo()\n\n")
-	breakingLongStringsDemo()
-	extractSubstringDemo()
-	findIndexOfSubstringDemo()
-	findSubstringDemo()
-	joiningStringsDemo()
-	replaceDemo()
+	// breakingLongStringsDemo()
+	// extractSubstringDemo()
+	// findIndexOfSubstringDemo()
+	// findSubstringDemo()
+	// joiningStringsDemo()
+	// replaceDemo()
 	removeNonAlphanumericDemo()
-	runeDemo()
-	stringComparisonDemo()
-	trimDemo()
-	trimLaeadingAndTrailingCharactersFromSet()
-	typeConversionsDemo()
-	splitDemo()
+	// runeDemo()
+	// stringComparisonDemo()
+	// trimDemo()
+	// trimLaeadingAndTrailingCharactersFromSet()
+	// typeConversionsDemo()
+	// splitDemo()
 	log.Printf("\n\n~stringdemo.ShowDemo()\n\n")
 }
