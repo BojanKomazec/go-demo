@@ -198,11 +198,54 @@ func makeRange(min, max int) []int {
 }
 
 func sliceDemo() {
-	// declared but not initialized slice has value nil
+	// Declaration by using var keyword.
+	// declared but not initialized slice has value nil ("nil-slice")
 	var slice0 []string
 	if slice0 == nil {
-		fmt.Println("slice0 is nil: ", slice0) // value printed: []
+		fmt.Println("slice0 is nil: ", slice0)
 	}
+	fmt.Printf("len(slice0) = %d, cap(slice0) = %d, slice0 = %#v\n", len(slice0), cap(slice0), slice0)
+	// Output:
+	// slice0 is nil:  []
+	// len(slice0) = 0, cap(slice0) = 0, slice0 = []string(nil)
+
+	// It is possible to append elements to nil-slice
+	slice0 = append(slice0, "firstInslice0")
+	fmt.Printf("slice0 = %#v\n", slice0)
+	// slice0 = []string{"firstInslice0"}
+
+	// Declaration by using "short declaration operator" (:=) and make function
+	slice01 := make([]string, 0)
+	if slice01 == nil {
+		fmt.Println("slice01 is nil: ", slice01)
+	} else {
+		fmt.Println("slice01 is NOT nil: ", slice01)
+	}
+	fmt.Printf("len(slice01) = %d, cap(slice01) = %d, slice01 = %#v\n", len(slice01), cap(slice01), slice01)
+	// Output:
+	// slice01 is NOT nil:  []
+	// len(slice01) = 0, cap(slice01) = 0, slice01 = []string{}
+
+	slice01 = append(slice01, "firstInslice01")
+	fmt.Printf("slice01 = %#v\n", slice01)
+	// slice0 = []string{"firstInslice01"}
+
+	// Declaration by using "short declaration operator" (:=) and empty slice literal
+	// slice literal => underlying array is allocated (even if it's a zero-length slice)
+	slice02 := []string{}
+	if slice02 == nil {
+		fmt.Println("slice02 is nil: ", slice02)
+	} else {
+		fmt.Println("slice02 is NOT nil: ", slice02)
+	}
+	fmt.Printf("len(slice02) = %d, cap(slice02) = %d, slice02 = %#v\n", len(slice02), cap(slice02), slice02)
+	// Output:
+	// slice02 is NOT nil:  []
+	// len(slice02) = 0, cap(slice02) = 0, slice02 = []string{}
+
+	slice02 = append(slice02, "firstInslice02")
+	fmt.Printf("slice02 = %#v\n", slice02)
+	// slice02 = []string{"firstInslice02"}
 
 	var slice1 []string
 	slice1 = []string{""}
@@ -315,11 +358,11 @@ func emptyInterfaceDemo() {
 // ShowDemo func
 func ShowDemo() {
 	fmt.Printf("\n\ndatatypesdemo.ShowDemo()\n\n")
-	arrayDemo()
-	demoTypeAssertion()
-	emptyInterfaceDemo()
-	nilSliceDemo()
+	// arrayDemo()
+	// demoTypeAssertion()
+	// emptyInterfaceDemo()
+	// nilSliceDemo()
 	sliceDemo()
-	testCallingFunctionWhichReturnsEmptyInterface()
+	// testCallingFunctionWhichReturnsEmptyInterface()
 	fmt.Printf("\n\n~datatypesdemo.ShowDemo()\n\n")
 }

@@ -9,6 +9,8 @@ import (
 	"strconv"
 	"text/template"
 	"time"
+
+	"github.com/Masterminds/sprig"
 )
 
 type person struct {
@@ -18,7 +20,7 @@ type person struct {
 }
 
 const st = `<!DOCTYPE html>
-<html>
+<html> "github.com/Masterminds/sprig"
    <head>
       <title>Test</title>
    </head>
@@ -211,18 +213,144 @@ func demoRangeArray(stringTemplate string) {
 	fmt.Println()
 }
 
+// DirNode struct
+type DirNode struct {
+	Name  string
+	Files []string
+	Nodes []DirNode
+}
+
+// Solution for recursive templates:
+// 		https://gist.github.com/mxlje/8e6279a90dc8f79f65fa8c855e1d7a79
+//
+// Links to read in order to understand solution for getting indentation of nodes created by recursive template:
+// 		https://github.com/Masterminds/sprig
+// 		https://github.com/Masterminds/sprig/issues/57
+// 		https://stackoverflow.com/questions/43821989/how-to-indent-content-of-included-template
+// 		https://github.com/helm/helm/blob/8648ccf5d35d682dcd5f7a9c2082f0aaf071e817/pkg/engine/engine.go#L148-L154
+func recursiveTemplateDemo() {
+	// I want to use sprig package so can do: {{ template "dirnode" . | indent 4 }}.
+	// cannot use sprig.FuncMap() (type "html/template".FuncMap) as type "text/template".FuncMap in argument to "text/template".New("root").Funcs
+	// tmpl, err := template.New("root").Funcs(sprig.FuncMap()).Parse(`
+
+	tmpl := template.New("root")
+
+    var funcMap template.FuncMap = map[string]interface{}{}
+    // copied from: https://github.com/helm/helm/blob/8648ccf5d35d682dcd5f7a9c2082f0aaf071e817/pkg/engine/engine.go#L147-L154
+    funcMap["include"] = func(name string, data interface{}) (string, error) {
+        buf := bytes.NewBuffer(nil)
+        if err := tmpl.ExecuteTemplate(buf, name, data); err != nil {
+            return "", err
+        }
+        return buf.String(), nil
+	}
+
+    tmpl = tmpl.Funcs(sprig.TxtFuncMap()).Funcs(funcMap)
+
+	var err error
+	tmpl, err = tmpl.Parse(
+		`{{ define "dirnode" }}
+			<DIRNODE>
+				Name = {{ .Name -}}
+				{{ if gt (len .Files) 0 }}
+					{{- range .Files }}
+				File = {{ . }}
+					{{- end }}
+				{{- end }}
+				{{- if gt (len .Nodes) 0 }}
+				{{- range .Nodes }}
+					{{- include "dirnode" . | indent 8 }}
+				{{- end }}
+				{{- end }}
+			</DIRNODE>
+		{{- end }}
+		{{ include "dirnode" . | indent 4 }}
+	`)
+
+	if err != nil {
+		panic(err)
+    }
+
+	data := DirNode{
+		Name: "Root",
+		Files: []string{
+			"root_file1",
+			"root_file2",
+		},
+		Nodes: []DirNode{
+			DirNode{
+				Name: "Users",
+				Files: []string{
+					"root_file1",
+					"root_file2",
+				},
+				Nodes: []DirNode{
+					DirNode{
+						Name: "Alice",
+						Files: []string{
+							"alice_file1",
+							"alice_file2",
+						},
+						Nodes: []DirNode{},
+					},
+					DirNode{
+						Name: "Bob",
+						Files: []string{
+							"bob_file1",
+							"bob_file2",
+						},
+						Nodes: []DirNode{
+							DirNode{
+								Name: "Books",
+								Files: []string{
+									"bobs_book1",
+									"bobs_book2",
+								},
+								Nodes: []DirNode{},
+							},
+						},
+					},
+				},
+			},
+			DirNode{
+				Name: "Libraries",
+				Files: []string{
+					"libraries_file1",
+					"libraries_file2",
+				},
+				Nodes: []DirNode{
+					DirNode{
+						Name: "LibA",
+						Files: []string{
+							"libA_file1",
+							"libA_file2",
+						},
+						Nodes: []DirNode{},
+					},
+				},
+			},
+		},
+	}
+
+	err = tmpl.Execute(os.Stdout, data)
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+}
+
 // ShowDemo func
 func ShowDemo() {
 	fmt.Printf("\n\ntexttemplatedemo.ShowDemo()\n\n")
-	readTemplateFromStringWriteToStdout()
-	readTemplateFromFileWriteToStdout()
-	readTemplateFromFileExecuteInBufferWriteToStdout()
-	showSpaceTrimming()
-	showUsingVariablesInTemplate()
-	demoPrintfInTemplate()
-	demoRangeArray(st5)
-	demoRangeArray(st6)
-	demoRangeArray(st7)
-	demoRangeArray(st8)
+	// readTemplateFromStringWriteToStdout()
+	// readTemplateFromFileWriteToStdout()
+	// readTemplateFromFileExecuteInBufferWriteToStdout()
+	// showSpaceTrimming()
+	// showUsingVariablesInTemplate()
+	// demoPrintfInTemplate()
+	// demoRangeArray(st5)
+	// demoRangeArray(st6)
+	// demoRangeArray(st7)
+	// demoRangeArray(st8)
+	recursiveTemplateDemo()
 	fmt.Printf("\n\n~texttemplatedemo.ShowDemo()\n\n")
 }

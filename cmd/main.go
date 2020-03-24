@@ -79,7 +79,8 @@ func init() {
 }
 
 func main() {
-	go runtimedemo.GoRoutineCountBackgroundMonitor()
+	// uncommment if required for debugging:
+	// go runtimedemo.GoRoutineCountBackgroundMonitor()
 
 	conf, err := config.New()
 	if err != nil {
@@ -99,7 +100,7 @@ func main() {
 	} else {
 		if true {
 			// place here only those demos you want to run
-			function.ShowDemo()
+			texttemplatedemo.ShowDemo()
 		} else {
 			archivedemo.ShowDemo()
 			// fmtdemo.ReadIntegersFromLine()

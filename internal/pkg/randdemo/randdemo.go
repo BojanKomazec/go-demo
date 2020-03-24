@@ -60,6 +60,12 @@ func demoGenerateRandomsWithCustomSeed() {
 	fmt.Println("~demoGenerateRandomsWithCustomSeed()")
 }
 
+func generateRandomByteArray(length int) ([]byte, error) {
+	file := make([]byte, length)
+	rand.Read(file)
+	return file, nil
+}
+
 // ShowDemo func
 func ShowDemo() {
 	fmt.Println()
