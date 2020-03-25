@@ -338,6 +338,148 @@ func recursiveTemplateDemo() {
 	}
 }
 
+// Data struct
+type Data struct {
+	DirNodes []DirNode
+	Title string
+}
+
+func recursiveTemplateDemo2() {
+	tmplDirNode := template.New("dirnode")
+
+    var funcMap template.FuncMap = map[string]interface{}{}
+    funcMap["include"] = func(name string, data interface{}) (string, error) {
+        buf := bytes.NewBuffer(nil)
+        if err := tmplDirNode.ExecuteTemplate(buf, name, data); err != nil {
+            return "", err
+        }
+        return buf.String(), nil
+	}
+
+    tmplDirNode = tmplDirNode.Funcs(sprig.TxtFuncMap()).Funcs(funcMap)
+
+	var err error
+	tmplDirNode, err = tmplDirNode.Parse(
+`<DIRNODE>
+    Name = {{ .Name -}}
+
+{{- if gt (len .Files) 0 }}
+	{{- range .Files }}
+    File = {{ . }}
+	{{- end }}
+{{ end -}}
+
+{{ if gt (len .Nodes) 0 }}
+{{- range .Nodes -}}
+{{ include "dirnode" . | indent 4}}
+{{ end -}}
+{{ end -}}
+</DIRNODE>`)
+
+	if err != nil {
+		panic(err)
+	}
+
+	tmpl := template.New("root")
+
+    funcMap = map[string]interface{}{}
+    funcMap["include"] = func(name string, data interface{}) (string, error) {
+        buf := bytes.NewBuffer(nil)
+        if err := tmpl.ExecuteTemplate(buf, name, data); err != nil {
+            return "", err
+        }
+        return buf.String(), nil
+	}
+
+	tmpl = tmpl.Funcs(sprig.TxtFuncMap()).Funcs(funcMap)
+	tmpl = tmpl.Funcs(sprig.TxtFuncMap())
+	tmpl, err = tmpl.Parse(
+`Title = {{ .Title }}
+{{ range .DirNodes -}}
+{{- template "dirnode" . }}
+{{ end }}`)
+
+	_, err = tmpl.AddParseTree(tmplDirNode.Name(), tmplDirNode.Tree)
+
+	if err != nil {
+		panic(err)
+	}
+
+
+	dirNode := DirNode{
+		Name: "Root",
+		Files: []string{
+			"root_file1",
+			"root_file2",
+		},
+		Nodes: []DirNode{
+			DirNode{
+				Name: "Users",
+				Files: []string{
+					"root_file1",
+					"root_file2",
+				},
+				Nodes: []DirNode{
+					DirNode{
+						Name: "Alice",
+						Files: []string{
+							"alice_file1",
+							"alice_file2",
+						},
+						Nodes: []DirNode{},
+					},
+					DirNode{
+						Name: "Bob",
+						Files: []string{
+							"bob_file1",
+							"bob_file2",
+						},
+						Nodes: []DirNode{
+							DirNode{
+								Name: "Books",
+								Files: []string{
+									"bobs_book1",
+									"bobs_book2",
+								},
+								Nodes: []DirNode{},
+							},
+						},
+					},
+				},
+			},
+			DirNode{
+				Name: "Libraries",
+				Files: []string{
+					"libraries_file1",
+					"libraries_file2",
+				},
+				Nodes: []DirNode{
+					DirNode{
+						Name: "LibA",
+						Files: []string{
+							"libA_file1",
+							"libA_file2",
+						},
+						Nodes: []DirNode{},
+					},
+				},
+			},
+		},
+	}
+
+	data := Data{
+		Title: "Test title",
+		DirNodes: []DirNode{
+			dirNode,
+		},
+	}
+
+	err = tmpl.Execute(os.Stdout, data)
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+}
+
 // ShowDemo func
 func ShowDemo() {
 	fmt.Printf("\n\ntexttemplatedemo.ShowDemo()\n\n")
@@ -351,6 +493,7 @@ func ShowDemo() {
 	// demoRangeArray(st6)
 	// demoRangeArray(st7)
 	// demoRangeArray(st8)
-	recursiveTemplateDemo()
+	// recursiveTemplateDemo()
+	recursiveTemplateDemo2()
 	fmt.Printf("\n\n~texttemplatedemo.ShowDemo()\n\n")
 }
