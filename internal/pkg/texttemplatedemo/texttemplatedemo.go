@@ -1,5 +1,10 @@
 package texttemplatedemo
 
+// @todo add demo which shows how to print curly braces in the output html
+// e.g.
+// 		my-property="{ {{- toBoolString .MyPropertyValue -}} }"
+// where toBoolString is registered function which transforms "0" to "false" and "1" to "true"
+
 import (
 	"bytes"
 	"fmt"
@@ -235,17 +240,17 @@ func recursiveTemplateDemo() {
 
 	tmpl := template.New("root")
 
-    var funcMap template.FuncMap = map[string]interface{}{}
-    // copied from: https://github.com/helm/helm/blob/8648ccf5d35d682dcd5f7a9c2082f0aaf071e817/pkg/engine/engine.go#L147-L154
-    funcMap["include"] = func(name string, data interface{}) (string, error) {
-        buf := bytes.NewBuffer(nil)
-        if err := tmpl.ExecuteTemplate(buf, name, data); err != nil {
-            return "", err
-        }
-        return buf.String(), nil
+	var funcMap template.FuncMap = map[string]interface{}{}
+	// copied from: https://github.com/helm/helm/blob/8648ccf5d35d682dcd5f7a9c2082f0aaf071e817/pkg/engine/engine.go#L147-L154
+	funcMap["include"] = func(name string, data interface{}) (string, error) {
+		buf := bytes.NewBuffer(nil)
+		if err := tmpl.ExecuteTemplate(buf, name, data); err != nil {
+			return "", err
+		}
+		return buf.String(), nil
 	}
 
-    tmpl = tmpl.Funcs(sprig.TxtFuncMap()).Funcs(funcMap)
+	tmpl = tmpl.Funcs(sprig.TxtFuncMap()).Funcs(funcMap)
 
 	var err error
 	tmpl, err = tmpl.Parse(
@@ -269,7 +274,7 @@ func recursiveTemplateDemo() {
 
 	if err != nil {
 		panic(err)
-    }
+	}
 
 	data := DirNode{
 		Name: "Root",
@@ -341,26 +346,26 @@ func recursiveTemplateDemo() {
 // Data struct
 type Data struct {
 	DirNodes []DirNode
-	Title string
+	Title    string
 }
 
 func recursiveTemplateDemo2() {
 	tmplDirNode := template.New("dirnode")
 
-    var funcMap template.FuncMap = map[string]interface{}{}
-    funcMap["include"] = func(name string, data interface{}) (string, error) {
-        buf := bytes.NewBuffer(nil)
-        if err := tmplDirNode.ExecuteTemplate(buf, name, data); err != nil {
-            return "", err
-        }
-        return buf.String(), nil
+	var funcMap template.FuncMap = map[string]interface{}{}
+	funcMap["include"] = func(name string, data interface{}) (string, error) {
+		buf := bytes.NewBuffer(nil)
+		if err := tmplDirNode.ExecuteTemplate(buf, name, data); err != nil {
+			return "", err
+		}
+		return buf.String(), nil
 	}
 
-    tmplDirNode = tmplDirNode.Funcs(sprig.TxtFuncMap()).Funcs(funcMap)
+	tmplDirNode = tmplDirNode.Funcs(sprig.TxtFuncMap()).Funcs(funcMap)
 
 	var err error
 	tmplDirNode, err = tmplDirNode.Parse(
-`<DIRNODE>
+		`<DIRNODE>
     Name = {{ .Name -}}
 
 {{- if gt (len .Files) 0 }}
@@ -382,19 +387,18 @@ func recursiveTemplateDemo2() {
 
 	tmpl := template.New("root")
 
-    funcMap = map[string]interface{}{}
-    funcMap["include"] = func(name string, data interface{}) (string, error) {
-        buf := bytes.NewBuffer(nil)
-        if err := tmpl.ExecuteTemplate(buf, name, data); err != nil {
-            return "", err
-        }
-        return buf.String(), nil
+	funcMap = map[string]interface{}{}
+	funcMap["include"] = func(name string, data interface{}) (string, error) {
+		buf := bytes.NewBuffer(nil)
+		if err := tmpl.ExecuteTemplate(buf, name, data); err != nil {
+			return "", err
+		}
+		return buf.String(), nil
 	}
 
 	tmpl = tmpl.Funcs(sprig.TxtFuncMap()).Funcs(funcMap)
-	tmpl = tmpl.Funcs(sprig.TxtFuncMap())
 	tmpl, err = tmpl.Parse(
-`Title = {{ .Title }}
+		`Title = {{ .Title }}
 {{ range .DirNodes -}}
 {{- template "dirnode" . }}
 {{ end }}`)
@@ -404,7 +408,6 @@ func recursiveTemplateDemo2() {
 	if err != nil {
 		panic(err)
 	}
-
 
 	dirNode := DirNode{
 		Name: "Root",

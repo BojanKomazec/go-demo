@@ -32,6 +32,11 @@ type person struct {
 	HomeAddress string `json:"home_address"`
 }
 
+type employee struct {
+	Person  *person
+	Company string
+}
+
 // personRegistry is JSON array of person elements
 type personRegistry struct {
 	collection []person
@@ -420,18 +425,50 @@ func serializeMyStruct6() {
 	fmt.Println(string(b))
 }
 
+// JSON serializer automatically dereferences pointers and serializes objects they point to (instead of pointers themselves)
+func serializeStructWithPointerMemberDemo() {
+	p := person{
+		Age:         23,
+		Name:        "Alice",
+		HomeAddress: "110 Brooklands Avenue",
+	}
+
+	e := employee{
+		Person:  &p,
+		Company: "ARM Silicon",
+	}
+
+	b, err := json.MarshalIndent(e, "", "\t")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(string(b))
+
+	// Output:
+	// {
+	//     "Person": {
+	//             "Age": 23,
+	//             "Name": "Alice",
+	//             "home_address": "110 Brooklands Avenue"
+	//     },
+	//     "Company": "ARM Silicon"
+	// }
+}
+
 // ShowDemo func
 func ShowDemo() {
 	fmt.Printf("\n\njsondemo.ShowDemo()\n\n")
-	demoStructToJSON()
-	demo1()
-	jsonArrayDemo()
-	unmarshalJSONWithSingleObjectDemo()
-	jsonDiffDemo()
-	gojsondiffDemo()
-	jaydiffDemo()
-	serializeArrayOfMixedTypes()
-	serializeMyStruct5()
-	serializeMyStruct6()
+	// demoStructToJSON()
+	// demo1()
+	// jsonArrayDemo()
+	// unmarshalJSONWithSingleObjectDemo()
+	// jsonDiffDemo()
+	// gojsondiffDemo()
+	// jaydiffDemo()
+	// serializeArrayOfMixedTypes()
+	// serializeMyStruct5()
+	// serializeMyStruct6()
+	serializeStructWithPointerMemberDemo()
 	fmt.Printf("\n\n~jsondemo.ShowDemo()\n")
 }

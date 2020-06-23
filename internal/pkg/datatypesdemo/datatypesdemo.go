@@ -197,7 +197,56 @@ func makeRange(min, max int) []int {
 	return slice
 }
 
-func sliceDemo() {
+// Input: sliceA and sliceB
+// Output: sliceC which contains elements from sliceA which are not in sliceB
+func filterStringSlice(sliceA, sliceB []string) []string {
+	s := sliceA[:0]
+	for _, a := range sliceA {
+		include := true
+		for _, b := range sliceB {
+			if a == b {
+				include = false
+				break
+			}
+		}
+
+		if include {
+			s = append(s, a)
+		}
+	}
+
+	return s
+}
+
+func filteringSliceDemo() {
+	sliceA := []string{"A", "BB", "CCC", "DDDD", "EEEEE", "FFFFFF"}
+	sliceB := []string{"A", "CCC", "EEEEE"}
+	sliceC := filterStringSlice(sliceA, sliceB)
+	log.Println("sliceC =", sliceC)
+}
+
+func removeDuplicates(s []string) []string {
+	m := make(map[string]bool)
+	sout := make([]string, 0)
+
+	for _, e := range s {
+		_, exists := m[e]
+		if !exists {
+			m[e] = true
+			sout = append(sout, e)
+		}
+	}
+
+	return sout
+}
+
+func removeDuplicatesDemo() {
+	s := []string{"A", "BB", "CCC", "A", "DDDD", "EEEEE", "FFFFFF", "A", "CCC"}
+	res := removeDuplicates(s)
+	log.Println("res =", res)
+}
+
+func sliceMiscDemo() {
 	// Declaration by using var keyword.
 	// declared but not initialized slice has value nil ("nil-slice")
 	var slice0 []string
@@ -305,6 +354,11 @@ func sliceDemo() {
 	fmt.Println("last3Segments =", last3Segments)
 }
 
+func sliceDemo() {
+	// sliceMiscDemo()
+	filteringSliceDemo()
+}
+
 // Code to accompany the following talk:
 // dotGo 2019 - Daniel Martí - Optimizing Go code without a blindfold
 // https://www.youtube.com/watch?v=jiXnzkAzy30
@@ -362,7 +416,8 @@ func ShowDemo() {
 	// demoTypeAssertion()
 	// emptyInterfaceDemo()
 	// nilSliceDemo()
-	sliceDemo()
+	// sliceDemo()
+	removeDuplicatesDemo()
 	// testCallingFunctionWhichReturnsEmptyInterface()
 	fmt.Printf("\n\n~datatypesdemo.ShowDemo()\n\n")
 }
