@@ -303,16 +303,38 @@ func typeConversionsDemo() {
 	fmt.Println("s2 (converted from int64) =", s2)
 }
 
+// strings.EqualFold
+func equalFoldDemo() {
+	s1 := "American dream"
+	s2 := "american Dream"
+
+	// We want to perform case-insensitive string comparison (in which case "American dream" is equal to "american Dream")
+
+	// strings.ToLower creates a copy of the string
+	if strings.ToLower(s1) == strings.ToLower(s2) {
+		log.Printf("Case-insensitive string comparison: %s == %s\n", s1, s2)
+	} else {
+		log.Printf("Case-insensitive string comparison: %s != %s\n", s1, s2)
+	}
+
+	if strings.EqualFold(s1, s2) {
+		log.Printf("Case-insensitive string comparison: %s == %s\n", s1, s2)
+	} else {
+		log.Printf("Case-insensitive string comparison: %s != %s\n", s1, s2)
+	}
+}
+
 // ShowDemo func
 func ShowDemo() {
 	log.Printf("\n\nstringdemo.ShowDemo()\n\n")
 	// breakingLongStringsDemo()
+	equalFoldDemo()
 	// extractSubstringDemo()
 	// findIndexOfSubstringDemo()
 	// findSubstringDemo()
 	// joiningStringsDemo()
 	// replaceDemo()
-	removeNonAlphanumericDemo()
+	// removeNonAlphanumericDemo()
 	// runeDemo()
 	// stringComparisonDemo()
 	// trimDemo()

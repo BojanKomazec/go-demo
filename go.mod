@@ -21,6 +21,7 @@ require (
 	github.com/nsf/jsondiff v0.0.0-20190712045011-8443391ee9b6
 	github.com/onsi/ginkgo v1.10.2
 	github.com/onsi/gomega v1.7.0
+	github.com/pkg/errors v0.9.1
 	github.com/sergi/go-diff v1.0.0 // indirect
 	github.com/yudai/gojsondiff v1.0.0
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect

@@ -12,6 +12,7 @@ import (
 	"github.com/BojanKomazec/go-demo/internal/pkg/datatypesdemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/elliotchancephpserializedemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/errordemo"
+	"github.com/BojanKomazec/go-demo/internal/pkg/errorspackagedemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/function"
 	"github.com/BojanKomazec/go-demo/internal/pkg/htmltemplatedemo"
 	"github.com/BojanKomazec/go-demo/internal/pkg/httpdemo"
@@ -100,8 +101,7 @@ func main() {
 	} else {
 		if true {
 			// place here only those demos you want to run
-			// jsondemo.ShowDemo()
-			datatypesdemo.ShowDemo()
+			stringdemo.ShowDemo()
 		} else {
 			archivedemo.ShowDemo()
 			// fmtdemo.ReadIntegersFromLine()
@@ -111,6 +111,7 @@ func main() {
 			// goroutinedemo.ShowDemo()
 			elliotchancephpserializedemo.ShowDemo()
 			errordemo.ShowDemo()
+			errorspackagedemo.ShowDemo()
 			function.ShowDemo()
 			htmltemplatedemo.ShowDemo()
 			httpdemo.ShowDemo(conf.OutputDir)
