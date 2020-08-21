@@ -249,12 +249,13 @@ func removeNonAlphanumeric(s string) string {
 
 	// First remove all Unicode characters.
 	// HTML/XML format for Unicode code points: &#nnnn; (n is decimal number - from 0 to 9)
-	reg := regexp.MustCompile("&#\\d{4};")
+	// NOTE: use raw string (`...`) with regexp.MustCompile to avoid having to escape twice
+	reg := regexp.MustCompile(`&#\\d{4};`)
 	s = reg.ReplaceAllString(s, "")
 	fmt.Println(s)
 
 	// Now remove all non-alphanumeric.
-	reg = regexp.MustCompile("[^a-zA-Z0-9\\s]+")
+	reg = regexp.MustCompile(`[^a-zA-Z0-9\\s]+`)
 	s = reg.ReplaceAllString(s, "")
 	return s
 }
@@ -262,7 +263,7 @@ func removeNonAlphanumeric(s string) string {
 // whitespace = space, tab (\t), new line (line feed, LF, \n), carriage return (CR, \r) or form feed (\f)
 func collapseMultipleWhiteSpacesIntoSingle(s string) string {
 	// "+" insures greediness - it will capture multiple instances
-	space := regexp.MustCompile("\\s+")
+	space := regexp.MustCompile(`\\s+`)
 	return space.ReplaceAllString(s, " ")
 }
 
@@ -311,6 +312,8 @@ func equalFoldDemo() {
 	// We want to perform case-insensitive string comparison (in which case "American dream" is equal to "american Dream")
 
 	// strings.ToLower creates a copy of the string
+	// This approach is caught by linter with a hint of the improvement:
+	//  SA6005: should use strings.EqualFold instead (staticcheck)
 	if strings.ToLower(s1) == strings.ToLower(s2) {
 		log.Printf("Case-insensitive string comparison: %s == %s\n", s1, s2)
 	} else {

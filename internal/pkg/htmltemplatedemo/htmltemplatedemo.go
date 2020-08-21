@@ -55,7 +55,9 @@ func readTemplateFromStringWriteToStdout() {
 		fmt.Printf("Error: %s\n", e.Error())
 		return
 	}
-	t.Execute(os.Stdout, &person{"Bojan", "Komazec"})
+	if e := t.Execute(os.Stdout, &person{"Bojan", "Komazec"}); e != nil {
+		fmt.Printf("Error: %s\n", e.Error())
+	}
 }
 
 type bookmark struct {
@@ -78,7 +80,9 @@ func readTemplateFromFileWriteToStdout() {
 		return
 	}
 
-	t.Execute(os.Stdout, &c)
+	if e := t.Execute(os.Stdout, &c); e != nil {
+		fmt.Printf("Error: %s\n", e.Error())
+	}
 }
 
 func readTemplateFromFileExecuteInBufferWriteToStdout() {
@@ -115,9 +119,14 @@ Good evening!
 // https://golang.org/pkg/text/template/#hdr-Text_and_spaces
 func showSpaceTrimming() {
 	t := template.Must(template.New("").Parse(st2))
-	t.Execute(os.Stdout, map[string]interface{}{"TimeOfDay": "evening"})
+	if e := t.Execute(os.Stdout, map[string]interface{}{"TimeOfDay": "evening"}); e != nil {
+		fmt.Printf("Error: %s\n", e.Error())
+		return
+	}
 	fmt.Println()
-	t.Execute(os.Stdout, map[string]interface{}{"TimeOfDay": "morning"})
+	if e := t.Execute(os.Stdout, map[string]interface{}{"TimeOfDay": "morning"}); e != nil {
+		fmt.Printf("Error: %s\n", e.Error())
+	}
 	fmt.Println()
 }
 
@@ -174,6 +183,16 @@ func demoRangeArray(stringTemplate string) {
 	fmt.Println("~htmltemplatedemo.demoRangeArray()")
 	fmt.Println()
 }
+
+// func createTemplateFromString(stringifiedTemplate string) (*template.Template, error) {
+// 	return template.New("mytemplate").Funcs(
+// 		template.FuncMap{
+// 			"timeToUnixTimeString": func(t time.Time) string {
+// 				return strconv.FormatInt(t.Unix(), 10)
+// 			},
+// 		},
+// 	).Parse(stringifiedTemplate)
+// }
 
 // ShowDemo func
 func ShowDemo() {

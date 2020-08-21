@@ -101,7 +101,7 @@ func main() {
 	} else {
 		if true {
 			// place here only those demos you want to run
-			stringdemo.ShowDemo()
+			types.ShowDemo()
 		} else {
 			archivedemo.ShowDemo()
 			// fmtdemo.ReadIntegersFromLine()
@@ -130,8 +130,7 @@ func main() {
 			structdemo.ShowDemo()
 			texttemplatedemo.ShowDemo()
 			timedemo.ShowDemo()
-			types.EnumDemo()
-			types.IotaDemo()
+			types.ShowDemo()
 		}
 	}
 }

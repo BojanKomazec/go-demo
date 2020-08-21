@@ -85,6 +85,10 @@ func compressToZip(source, destination string, includeRootDir bool) error {
 
 // ShowDemo func
 func ShowDemo() {
-	compressToZip("./data-vol/demo/archive_demo/dir_to_archive", "./data-vol/demo/archive_demo/archive1.zip", true)
-	compressToZip("./data-vol/demo/archive_demo/dir_to_archive", "./data-vol/demo/archive_demo/archive2.zip", false)
+	if e := compressToZip("./data-vol/demo/archive_demo/dir_to_archive", "./data-vol/demo/archive_demo/archive1.zip", true); e != nil {
+		fmt.Printf("Error: %s\n", e.Error())
+	}
+	if e := compressToZip("./data-vol/demo/archive_demo/dir_to_archive", "./data-vol/demo/archive_demo/archive2.zip", false); e != nil {
+		fmt.Printf("Error: %s\n", e.Error())
+	}
 }

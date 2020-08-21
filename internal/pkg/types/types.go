@@ -6,7 +6,7 @@ import (
 
 // IotaDemo ; in the current implementation iota values start from 1 but this is not guaranteed and can change in future
 // This function also shows how to declare enums in Go.
-func IotaDemo() {
+func iotaDemo() {
 	fmt.Println("\nIotaDemo()")
 
 	type Grades int
@@ -45,7 +45,7 @@ func IotaDemo() {
 
 }
 
-func EnumDemo() {
+func enumDemo() {
 	fmt.Println("\nEnumDemo()")
 
 	type Days string
@@ -85,4 +85,23 @@ func EnumDemo() {
 	// strDay = day3
 	// fmt.Println("strDay =", strDay)
 
+}
+
+// The expression T(x) converts the value x to the type T.
+// string(x) evaluates to a string containing the UTF-8 encoding of the value of x (NOT to the string representation of the integer x.)
+// This makes sense as strings in Go are UTF-8 encoded.
+// So don't use string(x) for conversion of integer to string!
+// https://golang.org/doc/go1.15#vet
+func int2stringConversionDemo() {
+	fmt.Printf("string(1) is %s\n", string(1))       // string(1) is
+	fmt.Printf("string(9786) is %s\n", string(9786)) // string(9786) is ☺
+
+	// this is a proper way to convert an integer to a string
+	fmt.Printf(`fmt.Sprintf("%%d", 9786) is %s`+"\n", fmt.Sprintf("%d", 9786)) // fmt.Sprintf("%d", 9786) is 9786
+}
+
+func ShowDemo() {
+	enumDemo()
+	iotaDemo()
+	int2stringConversionDemo()
 }

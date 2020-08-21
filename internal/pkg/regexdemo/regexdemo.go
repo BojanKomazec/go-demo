@@ -77,7 +77,7 @@ func demoExtractVersionFromString() {
 	s1 := "LeadingText-1.22.333.444-TrailingText"
 	fmt.Println("s1 =", s1)
 
-	regex, err := regexp.Compile("\\d+(\\.\\d+)+")
+	regex, err := regexp.Compile(`\\d+(\\.\\d+)+`)
 
 	if err != nil {
 		fmt.Println("error: ", err)
@@ -102,7 +102,7 @@ func demoExtractAnyCharactersBetweenAndIncludingTwoNumbers() {
 		"LeadingText-1234-TrailingText-5678", // it should extract only first match - 1234
 	}
 
-	regex, err := regexp.Compile("\\d(.*\\d)*")
+	regex, err := regexp.Compile(`\\d(.*\\d)*`)
 
 	if err != nil {
 		fmt.Println("error: ", err)
@@ -112,7 +112,7 @@ func demoExtractAnyCharactersBetweenAndIncludingTwoNumbers() {
 		}
 	}
 
-	regex2, err := regexp.Compile("\\d([\\.\\d]*\\d)*")
+	regex2, err := regexp.Compile(`\\d([\\.\\d]*\\d)*`)
 
 	if err != nil {
 		fmt.Println("error: ", err)
