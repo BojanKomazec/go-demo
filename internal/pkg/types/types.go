@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+	"strconv"
 )
 
 // IotaDemo ; in the current implementation iota values start from 1 but this is not guaranteed and can change in future
@@ -93,11 +94,13 @@ func enumDemo() {
 // So don't use string(x) for conversion of integer to string!
 // https://golang.org/doc/go1.15#vet
 func int2stringConversionDemo() {
-	fmt.Printf("string(1) is %s\n", string(1))       // string(1) is
-	fmt.Printf("string(9786) is %s\n", string(9786)) // string(9786) is ☺
+	fmt.Printf("string(1) is %s\n", string(1))                   // string(1) is
+	fmt.Printf("string(9786) is %s\n", string(9786))             // string(9786) is ☺
+	fmt.Printf("string(rune(9786)) is %s\n", string(rune(9786))) // string(rune(9786)) is ☺
 
 	// this is a proper way to convert an integer to a string
 	fmt.Printf(`fmt.Sprintf("%%d", 9786) is %s`+"\n", fmt.Sprintf("%d", 9786)) // fmt.Sprintf("%d", 9786) is 9786
+	fmt.Printf("strconv.Itoa(9786) is %s\n", strconv.Itoa(9786))               // strconv.Itoa(9786) is 9786
 }
 
 func ShowDemo() {
