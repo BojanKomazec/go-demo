@@ -53,9 +53,23 @@ func emptyStructDemo() {
 	fmt.Println("r3 =", r3)
 }
 
-// ShowDemo function
-func ShowDemo() {
-	fmt.Printf("\n\nstructdemo.ShowDemo()\n\n")
+func structCopyingDemo() {
+	// case 1: when struct contains only basic types which are copied by value
+	p1 := person{name: "Alex", age: 34}
+	fmt.Printf("p1 = %#v\n", p1)
+	fmt.Printf("%p\n", &p1.name) // 0xc000123720
+
+	p2 := p1
+	fmt.Printf("p2 = %#v\n", p2)
+	fmt.Printf("%p\n", &p2.name) // 0xc000123740
+
+	var p3 person
+	p3 = p1
+	fmt.Printf("p3 = %#v\n", p2)
+	fmt.Printf("%p\n", &p3.name) // 0xc0000a97a0
+}
+
+func structFunctionDemo() {
 	e, err := employee.New("Bojan", "Komazec", 15)
 	if err != nil {
 		println(err)
@@ -65,10 +79,16 @@ func ShowDemo() {
 
 	// implicit assignment of unexported field 'name' in employee.Employee literal
 	// e2 := employee.Employee{"John", "Smith", 12}
+}
 
-	emptyStructDemo()
+// ShowDemo function
+func ShowDemo() {
+	fmt.Printf("\n\nstructdemo.ShowDemo()\n\n")
 
-	testFunctionReceivers()
+	// structFunctionDemo()
+	// emptyStructDemo()
+	// testFunctionReceivers()
+	structCopyingDemo()
 
 	fmt.Printf("\n\n~structdemo.ShowDemo()\n\n")
 }

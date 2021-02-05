@@ -101,7 +101,7 @@ func main() {
 	} else {
 		if true {
 			// place here only those demos you want to run
-			types.ShowDemo()
+			structdemo.ShowDemo()
 		} else {
 			archivedemo.ShowDemo()
 			// fmtdemo.ReadIntegersFromLine()
